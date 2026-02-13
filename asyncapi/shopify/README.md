@@ -12,7 +12,7 @@ Before using this trigger in your Ballerina application, complete the following:
 
 |                               | Version                       |
 |-------------------------------|-------------------------------|
-| Ballerina Language            | Ballerina Swan Lake 2201.11.0 |
+| Ballerina Language            | Ballerina Swan Lake 2201.13.0 |
 | Shopify Webhook API           | 2021-10                       |
 
 ## Quickstart
