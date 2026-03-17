@@ -65,18 +65,28 @@ service class DispatcherService {
         string incomingSubscription = check ReqPayload.subscription;
 
         if (self.subscriptionResource === incomingSubscription) {
-            var historyResponse = listHistory(self.gmailConfig, self.getStartHistoryId());
-            if (historyResponse is gmail:ListHistoryResponse) {
-                gmail:History[]? historyList = historyResponse.history;
-                if historyList is gmail:History[] {
-                    foreach gmail:History historyItem in historyList {
-                        check self.dispatch(historyItem);
-                        self.setStartHistoryId(historyItem.id ?: self.getStartHistoryId());
-                        log:printDebug(NEXT_HISTORY_ID + self.getStartHistoryId());
+            string? pageToken = ();
+            while true {
+                var historyResponse = listHistory(self.gmailConfig, self.getStartHistoryId(), pageToken = pageToken);
+                if (historyResponse is gmail:ListHistoryResponse) {
+                    gmail:History[]? historyList = historyResponse.history;
+                    if historyList is gmail:History[] {
+                        foreach gmail:History historyItem in historyList {
+                            check self.dispatch(historyItem);
+                            self.setStartHistoryId(historyItem.id ?: self.getStartHistoryId());
+                            log:printDebug(NEXT_HISTORY_ID + self.getStartHistoryId());
+                        }
                     }
+                    string? nextToken = historyResponse.nextPageToken;
+                    if nextToken is string {
+                        pageToken = nextToken;
+                    } else {
+                        break;
+                    }
+                } else {
+                    log:printError(ERR_HISTORY_LIST, 'error = historyResponse);
+                    break;
                 }
-            } else {
-                log:printError(ERR_HISTORY_LIST, 'error = historyResponse);
             }
         } else {
             log:printWarn(WARN_UNKNOWN_PUSH_NOTIFICATION + incomingSubscription);
