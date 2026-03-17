@@ -25,12 +25,12 @@ configurable string project = ?;
 configurable string callbackURL = ?;
 
 mail:ListenerConfig listenerConfig = {
-    clientId: clientId,
-    clientSecret: clientSecret,
-    refreshUrl: refreshUrl,
-    refreshToken: refreshToken,
-    project: project,
-    callbackURL: callbackURL
+    clientId,
+    clientSecret,
+    refreshUrl,
+    refreshToken,
+    project,
+    callbackURL
 };
 
 listener mail:Listener gmailListener = new (listenerConfig);
