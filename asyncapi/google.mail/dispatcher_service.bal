@@ -67,16 +67,25 @@ service class DispatcherService {
         if (self.subscriptionResource === incomingSubscription) {
             string? pageToken = ();
             boolean historyFetchFailed = false;
+            string startId = self.getStartHistoryId();
+            string lastHistoryId = startId;
             while true {
-                var historyResponse = listHistory(self.gmailConfig, self.getStartHistoryId(), pageToken = pageToken);
+                var historyResponse = listHistory(self.gmailConfig, startId, pageToken = pageToken);
                 if historyResponse is gmail:ListHistoryResponse {
                     gmail:History[]? historyList = historyResponse.history;
                     if historyList is gmail:History[] {
                         foreach gmail:History historyItem in historyList {
                             check self.dispatch(historyItem);
-                            self.setStartHistoryId(historyItem.id ?: self.getStartHistoryId());
-                            log:printDebug(NEXT_HISTORY_ID + self.getStartHistoryId());
+                            string? itemId = historyItem.id;
+                            if itemId is string {
+                                lastHistoryId = itemId;
+                            }
                         }
+                    }
+                    // Prefer the mailbox-level historyId from the response as the next cursor
+                    string? responseHistoryId = historyResponse.historyId;
+                    if responseHistoryId is string {
+                        lastHistoryId = responseHistoryId;
                     }
                     string? nextToken = historyResponse.nextPageToken;
                     if nextToken is string {
@@ -89,6 +98,10 @@ service class DispatcherService {
                     historyFetchFailed = true;
                     break;
                 }
+            }
+            if !historyFetchFailed {
+                self.setStartHistoryId(lastHistoryId);
+                log:printDebug(NEXT_HISTORY_ID + lastHistoryId);
             }
             if historyFetchFailed {
                 check caller->respond(http:STATUS_INTERNAL_SERVER_ERROR);
