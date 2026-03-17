@@ -51,10 +51,10 @@ function runTests() returns error? {
     
     gmail:Client gmailClient = check new ({
         auth: {
-            clientId: clientId,
-            clientSecret: clientSecret,
-            refreshUrl: refreshUrl,
-            refreshToken: refreshToken
+            clientId,
+            clientSecret,
+            refreshUrl,
+            refreshToken
         }
     });
 
