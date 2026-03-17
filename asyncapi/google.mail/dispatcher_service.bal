@@ -66,6 +66,7 @@ service class DispatcherService {
 
         if (self.subscriptionResource === incomingSubscription) {
             string? pageToken = ();
+            boolean historyFetchFailed = false;
             while true {
                 var historyResponse = listHistory(self.gmailConfig, self.getStartHistoryId(), pageToken = pageToken);
                 if (historyResponse is gmail:ListHistoryResponse) {
@@ -85,13 +86,19 @@ service class DispatcherService {
                     }
                 } else {
                     log:printError(ERR_HISTORY_LIST, 'error = historyResponse);
+                    historyFetchFailed = true;
                     break;
                 }
             }
+            if historyFetchFailed {
+                check caller->respond(http:STATUS_INTERNAL_SERVER_ERROR);
+            } else {
+                check caller->respond(http:STATUS_OK);
+            }
         } else {
             log:printWarn(WARN_UNKNOWN_PUSH_NOTIFICATION + incomingSubscription);
+            check caller->respond(http:STATUS_OK);
         }
-        check caller->respond(http:STATUS_OK);
     }
 
     private isolated function executeRemoteFunc(GenericDataType genericEvent, string eventName, string serviceTypeStr, string eventFunction) returns error? {
