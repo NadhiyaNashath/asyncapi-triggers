@@ -193,16 +193,18 @@ service class DispatcherService {
     }
 
     isolated function dispatchLabelAddedEmail(gmail:HistoryLabelAdded addedlabel) returns @tainted error? {
-        ChangedLabel changedLabel = {messageDetail: {id: "", threadId: ""}, changedLabelId: []};
-        if addedlabel.labelIds is string[] {
-            changedLabel.changedLabelId = <string[]>addedlabel.labelIds;
+        if addedlabel.labelIds !is string[] {
+            return;
         }
         gmail:Message? msg = addedlabel.message;
         if msg is () {
             return;
         }
         gmail:Message message = check readMessage(self.gmailConfig, <@untainted>msg.id);
-        changedLabel.messageDetail = message;
+        ChangedLabel changedLabel = {
+            messageDetail: message,
+            changedLabelId: <string[]>addedlabel.labelIds
+        };
         check self.executeRemoteFunc(changedLabel, "emailLabelAdded", "GmailService", "onEmailLabelAdded");
     }
 
@@ -224,16 +226,18 @@ service class DispatcherService {
     }
 
     isolated function dispatchLabelRemovedEmail(gmail:HistoryLabelRemoved removedLabel) returns @tainted error? {
-        ChangedLabel changedLabel = {messageDetail: {id: "", threadId: ""}, changedLabelId: []};
-        if (removedLabel.labelIds is string[]) {
-            changedLabel.changedLabelId = <string[]>removedLabel.labelIds;
+        if removedLabel.labelIds !is string[] {
+            return;
         }
         gmail:Message? msg = removedLabel.message;
         if msg is () {
             return;
         }
         gmail:Message message = check readMessage(self.gmailConfig, <@untainted>msg.id);
-        changedLabel.messageDetail = message;
+        ChangedLabel changedLabel = {
+            messageDetail: message,
+            changedLabelId: <string[]>removedLabel.labelIds
+        };
         check self.executeRemoteFunc(changedLabel, "emailLabelRemoved", "GmailService", "onEmailLabelRemoved");
     }
 
