@@ -69,6 +69,21 @@ dependencies = [
 
 [[package]]
 org = "ballerina"
+name = "gmail_client"
+version = "0.1.0"
+dependencies = [
+	{org = "ballerina", name = "http"},
+	{org = "ballerina", name = "lang.runtime"},
+	{org = "ballerina", name = "log"},
+	{org = "ballerinai", name = "observe"},
+	{org = "ballerinax", name = "googleapis.gmail"}
+]
+modules = [
+	{org = "ballerina", packageName = "gmail_client", moduleName = "gmail_client"}
+]
+
+[[package]]
+org = "ballerina"
 name = "http"
 version = "2.14.9"
 dependencies = [
@@ -329,20 +344,5 @@ modules = [
 	{org = "ballerinax", packageName = "googleapis.gmail", moduleName = "googleapis.gmail"},
 	{org = "ballerinax", packageName = "googleapis.gmail", moduleName = "googleapis.gmail.mock"},
 	{org = "ballerinax", packageName = "googleapis.gmail", moduleName = "googleapis.gmail.oas"}
-]
-
-[[package]]
-org = "nipunal"
-name = "gmail_client"
-version = "0.1.0"
-dependencies = [
-	{org = "ballerina", name = "http"},
-	{org = "ballerina", name = "lang.runtime"},
-	{org = "ballerina", name = "log"},
-	{org = "ballerinai", name = "observe"},
-	{org = "ballerinax", name = "googleapis.gmail"}
-]
-modules = [
-	{org = "nipunal", packageName = "gmail_client", moduleName = "gmail_client"}
 ]
 

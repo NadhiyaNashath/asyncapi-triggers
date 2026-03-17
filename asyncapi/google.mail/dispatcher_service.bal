@@ -69,7 +69,7 @@ service class DispatcherService {
             boolean historyFetchFailed = false;
             while true {
                 var historyResponse = listHistory(self.gmailConfig, self.getStartHistoryId(), pageToken = pageToken);
-                if (historyResponse is gmail:ListHistoryResponse) {
+                if historyResponse is gmail:ListHistoryResponse {
                     gmail:History[]? historyList = historyResponse.history;
                     if historyList is gmail:History[] {
                         foreach gmail:History historyItem in historyList {
@@ -181,7 +181,7 @@ service class DispatcherService {
 
     isolated function dispatchLabelAddedEmail(gmail:HistoryLabelAdded addedlabel) returns @tainted error? {
         ChangedLabel changedLabel = {messageDetail: {id: "", threadId: ""}, changedLabelId: []};
-        if (addedlabel.labelIds is string[]) {
+        if addedlabel.labelIds is string[] {
             changedLabel.changedLabelId = <string[]>addedlabel.labelIds;
         }
         gmail:Message? msg = addedlabel.message;
