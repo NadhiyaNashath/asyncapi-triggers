@@ -9,8 +9,5 @@ distribution = "2201.13.0"
 icon = "docs/icon.png"
 authors = ["Ballerina"]
 
-[dependencies]
-"ballerina/crypto" = "2.11.0"
-
 [build-options]
 observabilityIncluded = true
