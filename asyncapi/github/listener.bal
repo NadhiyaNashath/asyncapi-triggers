@@ -14,14 +14,16 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/cloud;
 import ballerina/http;
 
-@display {label: ""}
+@display {label: "GitHub", iconPath: "docs/icon.png"}
 public class Listener {
     private http:Listener httpListener;
     private DispatcherService dispatcherService;
 
-    public function init(int|http:Listener listenTo = 8090, *ListenerConfiguration configuration) returns error? {
+    public function init(@cloud:Expose int|http:Listener listenTo = 8090,
+            *ListenerConfiguration configuration) returns error? {
         if listenTo is http:Listener {
             self.httpListener = listenTo;
         } else {
