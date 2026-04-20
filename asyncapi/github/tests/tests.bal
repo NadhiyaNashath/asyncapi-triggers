@@ -18,6 +18,7 @@ import ballerina/test;
 import ballerina/log;
 import ballerina/lang.runtime;
 import ballerina/http;
+import ballerina/crypto;
 
 boolean webhookRegistrationNotified = false;
 string webhookHookType = "";
@@ -32,58 +33,59 @@ boolean issueAssignedNotified = false;
 string issueAssignee = "";
 
 boolean issueEditedNotified = false;
-Changes? issueChanges = ();
+record {}? issueChanges = ();
 
 int createdIssueNumber = -1;
 
 configurable string githubSecret = "q234";
 
-configurable ListenerConfig userInput = {
-    webhookSecret: githubSecret
-};
-
-listener Listener githubListener = new (userInput, 8090);
+listener Listener githubListener = new (8090, webhookSecret = githubSecret);
 
 service IssuesService on githubListener {
-    
-    remote function onAssigned(IssuesEvent payload) returns error? {
+
+    remote function onIssuesAssigned(IssuesPayload payload) returns error? {
        log:printInfo("Issue assigned");
        issueAssignedNotified = true;
-       User assignee = <User> payload.issue.assignee;
-       issueAssignee = <@untainted> assignee.login;
     }
 
-    remote function onClosed(IssuesEvent payload) returns error? {
+    remote function onIssuesClosed(IssuesPayload payload) returns error? {
         return;
-    } 
+    }
 
-    remote function onLabeled(IssuesEvent payload) returns error? {
+    remote function onIssuesLabeled(IssuesPayload payload) returns error? {
         log:printInfo("Issue labeled");
         issueLabeledNotified = true;
-        string receivedIssueLabels = "";
-        foreach Label label in payload.issue.labels {
-            receivedIssueLabels += label.name;
-        }
-        issueLabels = <@untainted> receivedIssueLabels;
     }
 
-    remote function onOpened(IssuesEvent payload) returns error? {
+    remote function onIssuesOpened(IssuesPayload payload) returns error? {
         log:printInfo("Issue opened", notificationMsg = payload);
         issueCreationNotified = true;
         issueTitle = <@untainted> payload.issue.title;
     }
 
-    remote function onReopened(IssuesEvent payload) returns error? {
+    remote function onIssuesReopened(IssuesPayload payload) returns error? {
         return;
     }
 
-    remote function onUnassigned(IssuesEvent payload) returns error? {
+    remote function onIssuesUnassigned(IssuesPayload payload) returns error? {
         return;
     }
 
-    remote function onUnlabeled(IssuesEvent payload) returns error? {
+    remote function onIssuesUnlabeled(IssuesPayload payload) returns error? {
         return;
     }
+
+    remote function onIssuesDeleted(IssuesPayload payload) returns error? { return; }
+    remote function onIssuesDemilestoned(IssuesPayload payload) returns error? { return; }
+    remote function onIssuesMilestoned(IssuesPayload payload) returns error? { return; }
+    remote function onIssuesPinned(IssuesPayload payload) returns error? { return; }
+    remote function onIssuesUnpinned(IssuesPayload payload) returns error? { return; }
+    remote function onIssuesTransferred(IssuesPayload payload) returns error? { return; }
+    remote function onIssuesTyped(IssuesPayload payload) returns error? { return; }
+    remote function onIssuesUntyped(IssuesPayload payload) returns error? { return; }
+    remote function onIssuesLocked(IssuesPayload payload) returns error? { return; }
+    remote function onIssuesUnlocked(IssuesPayload payload) returns error? { return; }
+    remote function onIssuesEdited(IssuesPayload payload) returns error? { return; }
 }
 
 string createdIssueTitle = "This is a test issue";
@@ -282,16 +284,24 @@ function testWebhookNotificationOnIssueCreation() {
         }
     };
 
+    string issueCreationPayloadStr = eventPayload.toJsonString();
+    byte[]|error issueCreationHmac = crypto:hmacSha256(issueCreationPayloadStr.toBytes(), githubSecret.toBytes());
+    if issueCreationHmac is error {
+        test:assertFail(msg = "HMAC computation failed: " + issueCreationHmac.message());
+    }
     http:Request req = new;
-    req.setPayload(eventPayload.toJsonString());
+    req.setPayload(issueCreationPayloadStr);
+    req.setHeader("Content-Type", "application/json");
     req.setHeader("X-GitHub-Event", "issues");
+    req.setHeader("X-Hub-Signature-256", "sha256=" + issueCreationHmac.toBase16());
     http:Response|error issueCreationPayload =  clientEndpoint->post("/", req);
 
     if (issueCreationPayload is error) {
         test:assertFail(msg = "Issue creation failed: " + issueCreationPayload.message());
     } else {
-        test:assertTrue(issueCreationPayload.statusCode === 200 || issueCreationPayload.statusCode === 201, msg = "expected a 200/201 status code. Found " + issueCreationPayload.statusCode.toBalString());
-        test:assertEquals(issueCreationPayload.getTextPayload(), "Event acknoledged successfully", msg = "");
+        test:assertTrue(issueCreationPayload.statusCode === 200 || issueCreationPayload.statusCode === 201,
+                msg = "expected a 200/201 status code. Found " + issueCreationPayload.statusCode.toBalString());
+        test:assertEquals(issueCreationPayload.getTextPayload(), "200", msg = "");
     }
 
     int counter = 10;
@@ -348,7 +358,6 @@ function testWebhookNotificationOnIssueLabeling() {
                 "url": "https://api.github.com/repos/ABCUser/samplestest/labels/bug",
                 "name": "bug",
                 "color": "d73a4a",
-                "default": true,
                 "description": "Something isn't working"
             },
             {
@@ -357,7 +366,6 @@ function testWebhookNotificationOnIssueLabeling() {
                 "url": "https://api.github.com/repos/ABCUser/samplestest/labels/documentation",
                 "name": "documentation",
                 "color": "0075ca",
-                "default": true,
                 "description": "Improvements or additions to documentation"
             }
             ],
@@ -434,7 +442,6 @@ function testWebhookNotificationOnIssueLabeling() {
             "url": "https://api.github.com/repos/ABCUser/samplestest/labels/bug",
             "name": "bug",
             "color": "d73a4a",
-            "default": true,
             "description": "Something isn't working"
         },
         "repository": {
@@ -558,16 +565,24 @@ function testWebhookNotificationOnIssueLabeling() {
             "site_admin": false
         }
     };
+    string issueLabelledPayloadStr = eventPayload.toJsonString();
+    byte[]|error issueLabelledHmac = crypto:hmacSha256(issueLabelledPayloadStr.toBytes(), githubSecret.toBytes());
+    if issueLabelledHmac is error {
+        test:assertFail(msg = "HMAC computation failed: " + issueLabelledHmac.message());
+    }
     http:Request req = new;
-    req.setPayload(eventPayload.toJsonString());
+    req.setPayload(issueLabelledPayloadStr);
+    req.setHeader("Content-Type", "application/json");
     req.setHeader("X-GitHub-Event", "issues");
+    req.setHeader("X-Hub-Signature-256", "sha256=" + issueLabelledHmac.toBase16());
     http:Response|error issueLabelledPayload =  clientEndpoint->post("/", req);
 
     if (issueLabelledPayload is error) {
         test:assertFail(msg = "Issue creation failed: " + issueLabelledPayload.message());
     } else {
-        test:assertTrue(issueLabelledPayload.statusCode === 200 || issueLabelledPayload.statusCode === 201, msg = "expected a 200/201 status code. Found " + issueLabelledPayload.statusCode.toBalString());
-        test:assertEquals(issueLabelledPayload.getTextPayload(), "Event acknoledged successfully", msg = "");
+        test:assertTrue(issueLabelledPayload.statusCode === 200 || issueLabelledPayload.statusCode === 201,
+                msg = "expected a 200/201 status code. Found " + issueLabelledPayload.statusCode.toBalString());
+        test:assertEquals(issueLabelledPayload.getTextPayload(), "200", msg = "");
     }
 
     int counter = 10;
@@ -829,16 +844,24 @@ function testWebhookNotificationOnIssueAssignment() {
             "site_admin": false
         }
     };
+    string issueAssignmentPayloadStr = eventPayload.toJsonString();
+    byte[]|error issueAssignmentHmac = crypto:hmacSha256(issueAssignmentPayloadStr.toBytes(), githubSecret.toBytes());
+    if issueAssignmentHmac is error {
+        test:assertFail(msg = "HMAC computation failed: " + issueAssignmentHmac.message());
+    }
     http:Request req = new;
-    req.setPayload(eventPayload.toJsonString());
+    req.setPayload(issueAssignmentPayloadStr);
+    req.setHeader("Content-Type", "application/json");
     req.setHeader("X-GitHub-Event", "issues");
+    req.setHeader("X-Hub-Signature-256", "sha256=" + issueAssignmentHmac.toBase16());
     http:Response|error issueAssignmentPayload =  clientEndpoint->post("/", req);
 
     if (issueAssignmentPayload is error) {
         test:assertFail(msg = "Issue creation failed: " + issueAssignmentPayload.message());
     } else {
-        test:assertTrue(issueAssignmentPayload.statusCode === 200 || issueAssignmentPayload.statusCode === 201, msg = "expected a 200/201 status code. Found " + issueAssignmentPayload.statusCode.toBalString());
-        test:assertEquals(issueAssignmentPayload.getTextPayload(), "Event acknoledged successfully", msg = "");
+        test:assertTrue(issueAssignmentPayload.statusCode === 200 || issueAssignmentPayload.statusCode === 201,
+                msg = "expected a 200/201 status code. Found " + issueAssignmentPayload.statusCode.toBalString());
+        test:assertEquals(issueAssignmentPayload.getTextPayload(), "200", msg = "");
     }
 
     int counter = 10;
