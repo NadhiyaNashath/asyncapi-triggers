@@ -667,14 +667,18 @@ channels:
   issueDependencies:
     address: /
     description: |
-      Fired when there is activity relating to issue dependencies (tasklist).
-      Actions: issue_dependency_added, issue_dependency_removed. Available on
-      repository, organization, and app webhooks.
+      Fired when there is activity relating to issue dependencies. Actions:
+      blocked_by_added, blocked_by_removed, blocking_added, blocking_removed.
+      Available on repository, organization, and app webhooks.
     messages:
-      issueDependenciesIssueDependencyAdded:
-        $ref: '#/components/messages/IssueDependenciesIssueDependencyAddedMessage'
-      issueDependenciesIssueDependencyRemoved:
-        $ref: '#/components/messages/IssueDependenciesIssueDependencyRemovedMessage'
+      issueDependenciesBlockedByAdded:
+        $ref: '#/components/messages/IssueDependenciesBlockedByAddedMessage'
+      issueDependenciesBlockedByRemoved:
+        $ref: '#/components/messages/IssueDependenciesBlockedByRemovedMessage'
+      issueDependenciesBlockingAdded:
+        $ref: '#/components/messages/IssueDependenciesBlockingAddedMessage'
+      issueDependenciesBlockingRemoved:
+        $ref: '#/components/messages/IssueDependenciesBlockingRemovedMessage'
     bindings:
       http:
         method: POST
@@ -796,18 +800,18 @@ channels:
     address: /
     description: |
       Fired when there is activity relating to sub-issues. Actions:
-      child_issue_added, child_issue_removed, parent_issue_added,
-      parent_issue_removed. Available on repository, organization, and app
+      parent_issue_added, parent_issue_removed, sub_issue_added,
+      sub_issue_removed. Available on repository, organization, and app
       webhooks.
     messages:
-      subIssuesChildIssueAdded:
-        $ref: '#/components/messages/SubIssuesChildIssueAddedMessage'
-      subIssuesChildIssueRemoved:
-        $ref: '#/components/messages/SubIssuesChildIssueRemovedMessage'
       subIssuesParentIssueAdded:
         $ref: '#/components/messages/SubIssuesParentIssueAddedMessage'
       subIssuesParentIssueRemoved:
         $ref: '#/components/messages/SubIssuesParentIssueRemovedMessage'
+      subIssuesSubIssueAdded:
+        $ref: '#/components/messages/SubIssuesSubIssueAddedMessage'
+      subIssuesSubIssueRemoved:
+        $ref: '#/components/messages/SubIssuesSubIssueRemovedMessage'
     bindings:
       http:
         method: POST
@@ -1728,10 +1732,12 @@ operations:
     action: receive
     channel:
       $ref: '#/channels/issueDependencies'
-    summary: Receive issue dependency added or removed events
+    summary: Receive issue dependency events
     messages:
-      - $ref: '#/channels/issueDependencies/messages/issueDependenciesIssueDependencyAdded'
-      - $ref: '#/channels/issueDependencies/messages/issueDependenciesIssueDependencyRemoved'
+      - $ref: '#/channels/issueDependencies/messages/issueDependenciesBlockedByAdded'
+      - $ref: '#/channels/issueDependencies/messages/issueDependenciesBlockedByRemoved'
+      - $ref: '#/channels/issueDependencies/messages/issueDependenciesBlockingAdded'
+      - $ref: '#/channels/issueDependencies/messages/issueDependenciesBlockingRemoved'
   onMarketplacePurchase:
     action: receive
     channel:
@@ -1799,10 +1805,10 @@ operations:
       $ref: '#/channels/subIssues'
     summary: Receive sub-issue added or removed events
     messages:
-      - $ref: '#/channels/subIssues/messages/subIssuesChildIssueAdded'
-      - $ref: '#/channels/subIssues/messages/subIssuesChildIssueRemoved'
       - $ref: '#/channels/subIssues/messages/subIssuesParentIssueAdded'
       - $ref: '#/channels/subIssues/messages/subIssuesParentIssueRemoved'
+      - $ref: '#/channels/subIssues/messages/subIssuesSubIssueAdded'
+      - $ref: '#/channels/subIssues/messages/subIssuesSubIssueRemoved'
   onPageBuild:
     action: receive
     channel:
@@ -3375,20 +3381,38 @@ components:
       payload:
         $ref: '#/components/schemas/InstallationTargetPayload'
 
-    IssueDependenciesIssueDependencyAddedMessage:
+    IssueDependenciesBlockedByAddedMessage:
       name: issue_dependencies
-      title: Issue Dependencies Issue Dependency Added
-      summary: An issue dependency was added or removed
-      x-ballerina-event-type: "issue_dependencies_issue_dependency_added"
+      title: Issue Dependencies Blocked By Added
+      summary: An issue was marked as blocked by another issue
+      x-ballerina-event-type: "issue_dependencies_blocked_by_added"
       headers:
         $ref: '#/components/schemas/WebhookHeaders'
       payload:
         $ref: '#/components/schemas/IssueDependenciesPayload'
-    IssueDependenciesIssueDependencyRemovedMessage:
+    IssueDependenciesBlockedByRemovedMessage:
       name: issue_dependencies
-      title: Issue Dependencies Issue Dependency Removed
-      summary: An issue dependency was added or removed
-      x-ballerina-event-type: "issue_dependencies_issue_dependency_removed"
+      title: Issue Dependencies Blocked By Removed
+      summary: An issue was unmarked as blocked by another issue
+      x-ballerina-event-type: "issue_dependencies_blocked_by_removed"
+      headers:
+        $ref: '#/components/schemas/WebhookHeaders'
+      payload:
+        $ref: '#/components/schemas/IssueDependenciesPayload'
+    IssueDependenciesBlockingAddedMessage:
+      name: issue_dependencies
+      title: Issue Dependencies Blocking Added
+      summary: An issue was marked as blocking another issue
+      x-ballerina-event-type: "issue_dependencies_blocking_added"
+      headers:
+        $ref: '#/components/schemas/WebhookHeaders'
+      payload:
+        $ref: '#/components/schemas/IssueDependenciesPayload'
+    IssueDependenciesBlockingRemovedMessage:
+      name: issue_dependencies
+      title: Issue Dependencies Blocking Removed
+      summary: An issue was unmarked as blocking another issue
+      x-ballerina-event-type: "issue_dependencies_blocking_removed"
       headers:
         $ref: '#/components/schemas/WebhookHeaders'
       payload:
@@ -3610,20 +3634,20 @@ components:
       payload:
         $ref: '#/components/schemas/RepositoryImportPayload'
 
-    SubIssuesChildIssueAddedMessage:
+    SubIssuesSubIssueAddedMessage:
       name: sub_issues
-      title: Sub Issues Child Issue Added
-      summary: A sub-issue was added to or removed from an issue
-      x-ballerina-event-type: "sub_issues_child_issue_added"
+      title: Sub Issues Sub Issue Added
+      summary: A sub-issue was added to an issue
+      x-ballerina-event-type: "sub_issues_sub_issue_added"
       headers:
         $ref: '#/components/schemas/WebhookHeaders'
       payload:
         $ref: '#/components/schemas/SubIssuesPayload'
-    SubIssuesChildIssueRemovedMessage:
+    SubIssuesSubIssueRemovedMessage:
       name: sub_issues
-      title: Sub Issues Child Issue Removed
-      summary: A sub-issue was added to or removed from an issue
-      x-ballerina-event-type: "sub_issues_child_issue_removed"
+      title: Sub Issues Sub Issue Removed
+      summary: A sub-issue was removed from an issue
+      x-ballerina-event-type: "sub_issues_sub_issue_removed"
       headers:
         $ref: '#/components/schemas/WebhookHeaders'
       payload:
@@ -5832,6 +5856,8 @@ components:
         - commits
         - compare
         - pusher
+        - sender
+        - repository
       properties:
         ref:
           type: string
@@ -5887,6 +5913,9 @@ components:
         - action
         - number
         - pull_request
+        - assignee
+        - sender
+        - repository
       properties:
         action:
           type: string
@@ -5947,6 +5976,8 @@ components:
       required:
         - action
         - issue
+        - sender
+        - repository
       properties:
         action:
           type: string
@@ -5999,6 +6030,8 @@ components:
       required:
         - action
         - release
+        - sender
+        - repository
       properties:
         action:
           type: string
@@ -6034,6 +6067,8 @@ components:
         - action
         - issue
         - comment
+        - sender
+        - repository
       properties:
         action:
           type: string
@@ -6068,6 +6103,8 @@ components:
         - action
         - review
         - pull_request
+        - sender
+        - repository
       properties:
         action:
           type: string
@@ -6100,6 +6137,8 @@ components:
         - action
         - comment
         - pull_request
+        - sender
+        - repository
       properties:
         action:
           type: string
@@ -6800,6 +6839,8 @@ components:
       required:
         - action
         - label
+        - sender
+        - repository
       properties:
         action:
           type: string
@@ -6845,6 +6886,8 @@ components:
       required:
         - action
         - milestone
+        - sender
+        - repository
       properties:
         action:
           type: string
@@ -9839,6 +9882,7 @@ components:
         - action
         - environment
         - workflow_run
+        - since
       properties:
         action:
           type: string
@@ -10003,18 +10047,26 @@ components:
       description: Payload for issue_dependencies events
       required:
         - action
-        - issue
-        - dependency
       properties:
         action:
           type: string
           enum:
-            - issue_dependency_added
-            - issue_dependency_removed
-        issue:
+            - blocked_by_added
+            - blocked_by_removed
+            - blocking_added
+            - blocking_removed
+        blocked_issue_id:
+          type: integer
+          description: The ID of the blocked issue.
+        blocked_issue:
           $ref: '#/components/schemas/Issue'
-        dependency:
+        blocking_issue_id:
+          type: integer
+          description: The ID of the blocking issue.
+        blocking_issue:
           $ref: '#/components/schemas/Issue'
+        blocking_issue_repo:
+          $ref: '#/components/schemas/Repository'
         sender:
           $ref: '#/components/schemas/User'
         repository:
@@ -10033,6 +10085,7 @@ components:
         - action
         - marketplace_purchase
         - sender
+        - effective_date
       properties:
         action:
           type: string
@@ -10511,39 +10564,34 @@ components:
       description: Payload for sub_issues events
       required:
         - action
-        - issue
+        - parent_issue_id
+        - parent_issue
+        - parent_issue_repo
+        - sub_issue_id
+        - sub_issue
       properties:
         action:
           type: string
           enum:
-            - child_issue_added
-            - child_issue_removed
             - parent_issue_added
             - parent_issue_removed
-        issue:
-          $ref: '#/components/schemas/Issue'
-        sub_issue:
-          description: |
-            The child issue added or removed. Present for child_issue_added
-            and child_issue_removed actions.
-          allOf:
-            - $ref: '#/components/schemas/Issue'
-          nullable: true
+            - sub_issue_added
+            - sub_issue_removed
+        parent_issue_id:
+          type: integer
+          description: The ID of the parent issue.
         parent_issue:
-          description: |
-            The parent issue added or removed. Present for parent_issue_added
-            and parent_issue_removed actions.
-          allOf:
-            - $ref: '#/components/schemas/Issue'
-          nullable: true
-        sub_issue_graph_ql_id:
-          type: string
-          nullable: true
-          description: The GraphQL node ID of the sub-issue
-        parent_issue_graph_ql_id:
-          type: string
-          nullable: true
-          description: The GraphQL node ID of the parent issue
+          $ref: '#/components/schemas/Issue'
+          description: The parent issue.
+        parent_issue_repo:
+          $ref: '#/components/schemas/Repository'
+          description: The repository of the parent issue.
+        sub_issue_id:
+          type: integer
+          description: The ID of the sub-issue.
+        sub_issue:
+          $ref: '#/components/schemas/Issue'
+          description: The sub-issue.
         sender:
           $ref: '#/components/schemas/User'
         repository:

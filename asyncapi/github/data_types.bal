@@ -17,23 +17,17 @@
 
 import ballerina/http;
 
-// Listener related configurations should be included here
-public type ListenerConfiguration record {|
-    *http:ListenerConfiguration;
-    string webhookSecret = "";
-|};
-
-public type ForkPayload record {
+public type ForkEvent record {
     # The created (forked) repository
     Repository forkee;
-    User sender?;
-    Repository repository?;
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
 };
 
-public type WorkflowRunPayload record {
+public type WorkflowRunEvent record {
     string action;
     WorkflowRun workflow_run;
     # The workflow that is being run
@@ -46,7 +40,7 @@ public type WorkflowRunPayload record {
     Enterprise enterprise?;
 };
 
-public type GollumPayload record {
+public type GollumEvent record {
     # The pages that were updated
     record { 
         # The name of the page
@@ -59,27 +53,27 @@ public type GollumPayload record {
         # The latest commit SHA of the page
         string sha; 
         string html_url;} [] pages;
-    User sender?;
-    Repository repository?;
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
 };
 
-public type ReleasePayload record {
+public type ReleaseEvent record {
     # The action that was performed
     string action;
     Release release;
     # For edited events, the changes to the release
     record {} changes?;
-    User sender?;
-    Repository repository?;
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
 };
 
-public type SecretScanningAlertLocationPayload record {
+public type SecretScanningAlertLocationEvent record {
     # The existing secret scanning alert the location was added to
     record { int number; string secret_type;}  alert;
     # The location where the secret was found
@@ -93,14 +87,14 @@ public type SecretScanningAlertLocationPayload record {
     Enterprise enterprise?;
 };
 
-public type DeploymentReviewPayload record {
+public type DeploymentReviewEvent record {
     string action;
     # The name of the environment that was approved or rejected
     string environment;
     # The reviewer's comment (for approved/rejected)
     string comment?;
     # ISO 8601 date of when the review was requested
-    string since?;
+    string since;
     # The reviewers who were requested or who reviewed
     record { string 'type?; # A User or Team object depending on type
         anydata reviewer?;} [] reviewers?;
@@ -126,7 +120,7 @@ public type PullRequest record {
     boolean locked?;
     string title;
     string body?;
-    User user?;
+    User user;
     Label[] labels?;
     User assignee?;
     User[] assignees?;
@@ -154,7 +148,7 @@ public type PullRequest record {
     record {} auto_merge?;
 };
 
-public type SecretScanningScanPayload record {
+public type SecretScanningScanEvent record {
     # What type of scan was completed
     string 'type;
     # What type of content was scanned
@@ -176,34 +170,34 @@ public type SecretScanningScanPayload record {
     Enterprise enterprise?;
 };
 
-public type IssueCommentPayload record {
+public type IssueCommentEvent record {
     string action;
     Issue issue;
     IssueComment comment;
     # For edited events, the changes to the comment
     record {} changes?;
-    User sender?;
-    Repository repository?;
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
 };
 
-public type DeploymentStatusPayload record {
+public type DeploymentStatusEvent record {
     string action;
     Deployment deployment;
     DeploymentStatus deployment_status;
     CheckRun check_run?;
     record {} workflow?;
     record {} workflow_run?;
-    User sender?;
-    Repository repository?;
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
 };
 
-public type OrganizationPayload record {
+public type OrganizationEvent record {
     string action;
     # The membership between the user and the organization.
     # Not present when the action is member_invited.
@@ -247,7 +241,7 @@ public type WebhookHeaders record {
     string userAgent?;
 };
 
-public type RepositoryDispatchPayload record {
+public type RepositoryDispatchEvent record {
     # The event_type specified in the dispatch request body
     string action;
     # The branch from which the dispatch was triggered
@@ -261,7 +255,7 @@ public type RepositoryDispatchPayload record {
     Enterprise enterprise?;
 };
 
-public type MergeGroupPayload record {
+public type MergeGroupEvent record {
     string action;
     # A group of pull requests grouped together by the merge queue
     record { # The SHA of the merge group's head commit
@@ -278,7 +272,7 @@ public type MergeGroupPayload record {
     Enterprise enterprise?;
 };
 
-public type WorkflowJobPayload record {
+public type WorkflowJobEvent record {
     string action;
     WorkflowJob workflow_job;
     # The deployment associated with the workflow job (if applicable)
@@ -290,7 +284,7 @@ public type WorkflowJobPayload record {
     Enterprise enterprise?;
 };
 
-public type OrgBlockPayload record {
+public type OrgBlockEvent record {
     string action;
     User blocked_user;
     User sender?;
@@ -299,7 +293,7 @@ public type OrgBlockPayload record {
     Enterprise enterprise?;
 };
 
-public type DependabotAlertPayload record {
+public type DependabotAlertEvent record {
     string action;
     # A Dependabot alert
     record { int number; string state; record { record { string ecosystem?; string name?;}  package?;
@@ -317,7 +311,7 @@ public type DependabotAlertPayload record {
     Enterprise enterprise?;
 };
 
-public type CustomPropertyValuesPayload record {
+public type CustomPropertyValuesEvent record {
     string action;
     # The new custom property values for the repository
     record { string property_name; # String or array of strings
@@ -332,7 +326,7 @@ public type CustomPropertyValuesPayload record {
     Enterprise enterprise?;
 };
 
-public type SecretScanningAlertPayload record {
+public type SecretScanningAlertEvent record {
     string action;
     # The secret scanning alert
     record { int number; string created_at?; string updated_at?; string url?; string html_url?; string locations_url?;
@@ -350,7 +344,7 @@ public type SecretScanningAlertPayload record {
     Enterprise enterprise?;
 };
 
-public type PullRequestReviewThreadPayload record {
+public type PullRequestReviewThreadEvent record {
     string action;
     PullRequest pull_request;
     # The review thread that was resolved or unresolved
@@ -369,13 +363,13 @@ public type IssueComment record {
     string url?;
     string html_url?;
     string body;
-    User user?;
+    User user;
     string created_at?;
     string updated_at?;
     string author_association?;
 };
 
-public type RegistryPackagePayload record {
+public type RegistryPackageEvent record {
     string action;
     # The registry package object
     record { int id; string name; string namespace?; string description?; string ecosystem?; string package_type;
@@ -392,7 +386,7 @@ public type RegistryPackagePayload record {
     Enterprise enterprise?;
 };
 
-public type CheckSuitePayload record {
+public type CheckSuiteEvent record {
     string action;
     CheckSuite check_suite;
     User sender?;
@@ -402,7 +396,7 @@ public type CheckSuitePayload record {
     Enterprise enterprise?;
 };
 
-public type DiscussionCommentPayload record {
+public type DiscussionCommentEvent record {
     string action;
     # The discussion comment
     record { int id?; string node_id?; string html_url?; string body?; User user?; string created_at?;
@@ -428,7 +422,7 @@ public type Organization record {
     string description?;
 };
 
-public type RepositoryImportPayload record {
+public type RepositoryImportEvent record {
     # The final status of the import
     string status;
     User sender?;
@@ -437,7 +431,7 @@ public type RepositoryImportPayload record {
     Installation installation?;
 };
 
-public type RepositoryPayload record {
+public type RepositoryEvent record {
     string action;
     # For edited/renamed/transferred events, the changes that occurred
     record {} changes?;
@@ -448,7 +442,7 @@ public type RepositoryPayload record {
     Enterprise enterprise?;
 };
 
-public type StarPayload record {
+public type StarEvent record {
     string action;
     # The time the star was created (ISO 8601). Null for the deleted action.
     string starred_at;
@@ -459,16 +453,16 @@ public type StarPayload record {
     Enterprise enterprise?;
 };
 
-public type WatchPayload record {
+public type WatchEvent record {
     string action;
-    User sender?;
-    Repository repository?;
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
 };
 
-public type PackagePayload record {
+public type PackageEvent record {
     string action;
     # Information about the package
     record { int id; string name; string namespace?; string description?; string ecosystem?; string package_type?;
@@ -486,7 +480,7 @@ public type PackagePayload record {
     Enterprise enterprise?;
 };
 
-public type WorkflowDispatchPayload record {
+public type WorkflowDispatchEvent record {
     # The inputs provided when manually triggering the workflow
     record {} inputs?;
     # The branch or tag ref from which the workflow was triggered
@@ -500,7 +494,7 @@ public type WorkflowDispatchPayload record {
     Enterprise enterprise?;
 };
 
-public type SponsorshipPayload record {
+public type SponsorshipEvent record {
     string action;
     # The sponsorship object
     record { string node_id; string created_at; string privacy_level; # The tier the sponsor has chosen
@@ -518,19 +512,13 @@ public type SponsorshipPayload record {
     Installation installation?;
 };
 
-public type SubIssuesPayload record {
+public type SubIssuesEvent record {
     string action;
-    Issue issue;
-    # The child issue added or removed. Present for child_issue_added
-    # and child_issue_removed actions.
-    anydata sub_issue?;
-    # The parent issue added or removed. Present for parent_issue_added
-    # and parent_issue_removed actions.
-    anydata parent_issue?;
-    # The GraphQL node ID of the sub-issue
-    string sub_issue_graph_ql_id?;
-    # The GraphQL node ID of the parent issue
-    string parent_issue_graph_ql_id?;
+    int parent_issue_id;
+    Issue parent_issue;
+    Repository parent_issue_repo;
+    int sub_issue_id;
+    Issue sub_issue;
     User sender?;
     Repository repository?;
     Organization organization?;
@@ -538,7 +526,7 @@ public type SubIssuesPayload record {
     Enterprise enterprise?;
 };
 
-public type ProjectColumnPayload record {
+public type ProjectColumnEvent record {
     string action;
     # A column in a classic project board
     record { int id; string node_id; string url?; string project_url?; string cards_url?; string name;
@@ -569,7 +557,7 @@ public type Team record {
     record {} parent?;
 };
 
-public type MarketplacePurchasePayload record {
+public type MarketplacePurchaseEvent record {
     string action;
     # The GitHub Marketplace purchase
     record { record { string 'type; int id; string node_id?; string login; string organization_billing_email?;}  account;
@@ -579,12 +567,12 @@ public type MarketplacePurchasePayload record {
     # The previous purchase state (for changed/pending_change events)
     record {} previous_marketplace_purchase?;
     # ISO 8601 date when the change takes effect
-    string effective_date?;
+    string effective_date;
     User sender;
     Installation installation?;
 };
 
-public type PushPayload record {
+public type PushEvent record {
     # The full git ref that was pushed (e.g. refs/heads/main or refs/tags/v3.14.1)
     string ref;
     # The SHA of the most recent commit on ref before the push
@@ -606,8 +594,8 @@ public type PushPayload record {
     Commit head_commit?;
     # Metaproperties for the Git author/committer
     CommitAuthor pusher;
-    User sender?;
-    Repository repository?;
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
@@ -618,7 +606,7 @@ public type Installation record {
     string node_id?;
 };
 
-public type BranchProtectionRulePayload record {
+public type BranchProtectionRuleEvent record {
     string action;
     # The branch protection rule. Includes name and all branch protection
     # settings applied to matching branches. Binary settings are boolean;
@@ -643,14 +631,14 @@ public type BranchProtectionRulePayload record {
     Enterprise enterprise?;
 };
 
-public type PullRequestReviewCommentPayload record {
+public type PullRequestReviewCommentEvent record {
     string action;
     PullRequestReviewComment comment;
     PullRequest pull_request;
     # For edited events, the changes to the comment
     record {} changes?;
-    User sender?;
-    Repository repository?;
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
@@ -664,7 +652,7 @@ public type PullRequestRef record {
     Repository repo?;
 };
 
-public type 'ProjectsV2ItemPayload record {
+public type 'ProjectsV2ItemEvent record {
     string action;
     # An item belonging to a Projects v2 project
     record { int id; string node_id; string project_node_id; string content_node_id; string content_type;
@@ -676,7 +664,7 @@ public type 'ProjectsV2ItemPayload record {
     Installation installation?;
 };
 
-public type PingPayload record {
+public type PingEvent record {
     # Random string of GitHub zen
     string zen?;
     # The ID of the webhook that triggered the ping
@@ -689,7 +677,7 @@ public type PingPayload record {
     Organization organization?;
 };
 
-public type CreatePayload record {
+public type CreateEvent record {
     # The git ref resource (branch or tag name)
     string ref;
     # The type of Git ref object created
@@ -700,8 +688,8 @@ public type CreatePayload record {
     string description?;
     # The pusher type; either user or a deploy key
     string pusher_type;
-    User sender?;
-    Repository repository?;
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
@@ -757,7 +745,7 @@ public type PullRequestReviewComment record {
     int original_position?;
     string commit_id?;
     string original_commit_id?;
-    User user?;
+    User user;
     string created_at?;
     string updated_at?;
     string author_association?;
@@ -765,7 +753,7 @@ public type PullRequestReviewComment record {
     string start_side?;
 };
 
-public type TeamPayload record {
+public type TeamEvent record {
     string action;
     Team team;
     # For edited events, the changes to the team
@@ -793,7 +781,7 @@ public type Enterprise record {
     string updated_at?;
 };
 
-public type ProjectPayload record {
+public type ProjectEvent record {
     string action;
     # A classic project board
     record { int id; string node_id; string url?; string html_url?; string columns_url?; string name; string body?;
@@ -807,7 +795,7 @@ public type ProjectPayload record {
     Enterprise enterprise?;
 };
 
-public type InstallationTargetPayload record {
+public type InstallationTargetEvent record {
     string action;
     # The account (user or organization) where the app is installed
     record { int id; string node_id?; string login; string 'type; string avatar_url?; string html_url?;
@@ -835,7 +823,7 @@ public type DeploymentStatus record {
     record {} performed_via_github_app?;
 };
 
-public type InstallationRepositoriesPayload record {
+public type InstallationRepositoriesEvent record {
     string action;
     # Repositories added to the installation
     record { int id?; string node_id?; string name?; string full_name?; boolean 'private?;} [] repositories_added;
@@ -860,7 +848,7 @@ public type Issue record {
     string body?;
     string state;
     boolean locked?;
-    User user?;
+    User user;
     Label[] labels?;
     User assignee?;
     User[] assignees?;
@@ -904,7 +892,7 @@ public type Deployment record {
     record {} performed_via_github_app?;
 };
 
-public type BranchProtectionConfigurationPayload record {
+public type BranchProtectionConfigurationEvent record {
     # disabled — all branch protections were disabled. enabled — all were enabled.
     string action;
     User sender?;
@@ -914,7 +902,7 @@ public type BranchProtectionConfigurationPayload record {
     Enterprise enterprise?;
 };
 
-public type RepositoryRulesetPayload record {
+public type RepositoryRulesetEvent record {
     string action;
     # A set of rules to apply when specified conditions are met
     record { int id; string name; string target?; string source_type?; string 'source?; string enforcement;
@@ -930,7 +918,7 @@ public type RepositoryRulesetPayload record {
     Enterprise enterprise?;
 };
 
-public type SecurityAndAnalysisPayload record {
+public type SecurityAndAnalysisEvent record {
     # The security and analysis settings that changed
     record { # Change to GitHub Advanced Security enablement
         record { string 'from?; string to?;}  advanced_security?; # Change to Dependabot alerts enablement
@@ -953,7 +941,7 @@ public type CommitAuthor record {
     string username?;
 };
 
-public type DeployKeyPayload record {
+public type DeployKeyEvent record {
     string action;
     # The deploy key resource
     record { int id; # The public key
@@ -966,10 +954,13 @@ public type DeployKeyPayload record {
     Enterprise enterprise?;
 };
 
-public type IssueDependenciesPayload record {
+public type IssueDependenciesEvent record {
     string action;
-    Issue issue;
-    Issue dependency;
+    int blocked_issue_id?;
+    Issue blocked_issue?;
+    int blocking_issue_id?;
+    Issue blocking_issue?;
+    Repository blocking_issue_repo?;
     User sender?;
     Repository repository?;
     Organization organization?;
@@ -977,7 +968,7 @@ public type IssueDependenciesPayload record {
     Enterprise enterprise?;
 };
 
-public type RepositoryAdvisoryPayload record {
+public type RepositoryAdvisoryEvent record {
     string action;
     # A repository security advisory
     record { # The GitHub Security Advisory identifier
@@ -995,7 +986,7 @@ public type RepositoryAdvisoryPayload record {
     Enterprise enterprise?;
 };
 
-public type RepositoryVulnerabilityAlertPayload record {
+public type RepositoryVulnerabilityAlertEvent record {
     string action;
     # The security alert of the vulnerable dependency
     record { int id; string affected_package_name; string affected_range; string fixed_in?; string severity;
@@ -1023,7 +1014,7 @@ public type Milestone record {
     User creator?;
 };
 
-public type IssuesPayload record {
+public type IssuesEvent record {
     # The action that was performed
     string action;
     Issue issue;
@@ -1032,14 +1023,14 @@ public type IssuesPayload record {
     # For edited events, the changes to the issue
     record {} changes?;
     Milestone milestone?;
-    User sender?;
-    Repository repository?;
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
 };
 
-public type CodeScanningAlertPayload record {
+public type CodeScanningAlertEvent record {
     string action;
     # The code scanning alert involved in the event
     record { int number; string created_at?; string updated_at?; string url?; string html_url?; string state;
@@ -1061,20 +1052,20 @@ public type CodeScanningAlertPayload record {
     Enterprise enterprise?;
 };
 
-public type PullRequestReviewPayload record {
+public type PullRequestReviewEvent record {
     string action;
     PullRequestReview review;
     PullRequest pull_request;
     # For edited events, the changes to the review
     record {} changes?;
-    User sender?;
-    Repository repository?;
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
 };
 
-public type 'ProjectsV2Payload record {
+public type 'ProjectsV2Event record {
     string action;
     # A Projects v2 project
     record { int id; string node_id; User owner; User creator?; string title; string description?; boolean 'public?;
@@ -1085,7 +1076,7 @@ public type 'ProjectsV2Payload record {
     Installation installation?;
 };
 
-public type PersonalAccessTokenRequestPayload record {
+public type PersonalAccessTokenRequestEvent record {
     string action;
     # A fine-grained personal access token request
     record { int id; User owner; # Permissions added by the request
@@ -1102,7 +1093,7 @@ public type PersonalAccessTokenRequestPayload record {
     Enterprise enterprise?;
 };
 
-public type InstallationPayload record {
+public type InstallationEvent record {
     string action;
     Installation installation;
     # An array of repositories the installation can access
@@ -1146,7 +1137,7 @@ public type WorkflowRun record {
     Repository repository?;
 };
 
-public type DiscussionPayload record {
+public type DiscussionEvent record {
     string action;
     Discussion discussion;
     # Present on answered action — the comment marked as answer
@@ -1177,7 +1168,7 @@ public type CheckSuite record {
     string updated_at?;
 };
 
-public type StatusPayload record {
+public type StatusEvent record {
     # The unique identifier of the status
     int id;
     # The commit SHA
@@ -1199,14 +1190,14 @@ public type StatusPayload record {
     record { string name?; record { string sha?; string url?;}  'commit?; boolean protected?;} [] branches;
     string created_at;
     string updated_at;
-    User sender?;
-    Repository repository?;
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
 };
 
-public type 'ProjectsV2StatusUpdatePayload record {
+public type 'ProjectsV2StatusUpdateEvent record {
     string action;
     # A status update belonging to a Projects v2 project
     record { int id; string node_id; string project_node_id; string status?; string body?; string created_at?;
@@ -1216,7 +1207,7 @@ public type 'ProjectsV2StatusUpdatePayload record {
     Installation installation?;
 };
 
-public type CommonPayload record {
+public type CommonEvent record {
     User sender?;
     Repository repository?;
     Organization organization?;
@@ -1263,7 +1254,7 @@ public type User record {
 public type PullRequestReview record {
     int id;
     string node_id?;
-    User user?;
+    User user;
     string body?;
     string state;
     string html_url?;
@@ -1273,21 +1264,21 @@ public type PullRequestReview record {
     string author_association?;
 };
 
-public type DeletePayload record {
+public type DeleteEvent record {
     # The git ref resource (branch or tag name)
     string ref;
     # The type of Git ref object deleted
     string ref_type;
     # The pusher type; either user or a deploy key
     string pusher_type;
-    User sender?;
-    Repository repository?;
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
 };
 
-public type MetaPayload record {
+public type MetaEvent record {
     # Always deleted — the webhook that triggered this event was deleted
     string action;
     # The id of the modified webhook
@@ -1305,21 +1296,21 @@ public type MetaPayload record {
     Enterprise enterprise?;
 };
 
-public type DeploymentPayload record {
+public type DeploymentEvent record {
     string action;
     Deployment deployment;
     # The workflow that triggered the deployment (if applicable)
     record {} workflow;
     # The workflow run that triggered the deployment (if applicable)
     record {} workflow_run;
-    User sender?;
-    Repository repository?;
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
 };
 
-public type DeploymentProtectionRulePayload record {
+public type DeploymentProtectionRuleEvent record {
     # The name of the environment that has the deployment protection rule
     string environment?;
     # The event that triggered the deployment protection rule
@@ -1340,27 +1331,27 @@ public type DeploymentProtectionRulePayload record {
     Organization organization?;
 };
 
-public type LabelPayload record {
+public type LabelEvent record {
     string action;
     Label label;
     # For edited events, the changes to the label
     record { record { string 'from?;}  color?; record { string 'from?;}  name?;
     record { string 'from?;}  description?;}  changes?;
-    User sender?;
-    Repository repository?;
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
 };
 
-public type GithubAppAuthorizationPayload record {
+public type GithubAppAuthorizationEvent record {
     # Always revoked — a user revoked their GitHub App authorization
     string action;
     User sender?;
     Installation installation?;
 };
 
-public type PageBuildPayload record {
+public type PageBuildEvent record {
     # The unique identifier of the page build
     int id;
     # The GitHub Pages build object
@@ -1376,7 +1367,7 @@ public type PageBuildPayload record {
     Enterprise enterprise?;
 };
 
-public type ProjectCardPayload record {
+public type ProjectCardEvent record {
     string action;
     # A card on a classic project board
     record { int id; string node_id; string url?; int column_id; string column_url?; string project_url?; string note?;
@@ -1392,26 +1383,26 @@ public type ProjectCardPayload record {
     Enterprise enterprise?;
 };
 
-public type PullRequestPayload record {
+public type PullRequestEvent record {
     # The action that was performed
     string action;
     # The pull request number
     int number;
     PullRequest pull_request;
-    User assignee?;
+    User assignee;
     # For edited events, the changes to the pull request
     record {} changes?;
     User requested_reviewer?;
     Label label?;
     Milestone milestone?;
-    User sender?;
-    Repository repository?;
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
 };
 
-public type TeamAddPayload record {
+public type TeamAddEvent record {
     # The team that was granted access to the repository
     record { int id; string node_id; string url?; string html_url?; string name; string slug; string description?;
     string privacy?; string notification_setting?; string permission?; string members_url?; string repositories_url?;
@@ -1471,7 +1462,7 @@ public type Release record {
     string published_at?;
 };
 
-public type CustomPropertyPayload record {
+public type CustomPropertyEvent record {
     string action;
     # Custom property defined on an organization
     record { string property_name; string value_type; string required?; # Default value (string or array of strings)
@@ -1482,40 +1473,40 @@ public type CustomPropertyPayload record {
     Enterprise enterprise?;
 };
 
-public type PublicPayload record {
-    User sender?;
-    Repository repository?;
+public type PublicEvent record {
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
 };
 
-public type MemberPayload record {
+public type MemberEvent record {
     string action;
     User member;
     # For edited events, the changes to the member's permissions
     record { record { string 'from?;}  old_permission?; record { string 'from?; string to?;}  permission?;}  changes?;
-    User sender?;
-    Repository repository?;
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
 };
 
-public type MilestonePayload record {
+public type MilestoneEvent record {
     string action;
     Milestone milestone;
     # For edited events, the changes to the milestone
     record { record { string 'from?;}  description?; record { string 'from?;}  due_on?;
     record { string 'from?;}  title?;}  changes?;
-    User sender?;
-    Repository repository?;
+    User sender;
+    Repository repository;
     Organization organization?;
     Installation installation?;
     Enterprise enterprise?;
 };
 
-public type SecurityAdvisoryPayload record {
+public type SecurityAdvisoryEvent record {
     string action;
     # The details of the global security advisory, including summary,
     # description, severity, and affected packages.
@@ -1528,7 +1519,7 @@ public type SecurityAdvisoryPayload record {
     Installation installation?;
 };
 
-public type CheckRunPayload record {
+public type CheckRunEvent record {
     string action;
     CheckRun check_run;
     # Present for requested_action events
@@ -1540,7 +1531,7 @@ public type CheckRunPayload record {
     Enterprise enterprise?;
 };
 
-public type CommitCommentPayload record {
+public type CommitCommentEvent record {
     string action;
     # The commit comment resource
     record { int id; string node_id?; string url?; string html_url?; string body;
@@ -1594,7 +1585,7 @@ public type CheckRun record {
     record {}[] pull_requests?;
 };
 
-public type MembershipPayload record {
+public type MembershipEvent record {
     string action;
     User member;
     # The scope of the membership (currently always "team")
@@ -1606,21 +1597,21 @@ public type MembershipPayload record {
     Enterprise enterprise?;
 };
 
-public type GenericDataType ForkPayload|WorkflowRunPayload|GollumPayload|ReleasePayload
-|SecretScanningAlertLocationPayload|DeploymentReviewPayload|PullRequest|SecretScanningScanPayload|IssueCommentPayload
-|DeploymentStatusPayload|OrganizationPayload|WebhookHeaders|RepositoryDispatchPayload|MergeGroupPayload
-|WorkflowJobPayload|OrgBlockPayload|DependabotAlertPayload|CustomPropertyValuesPayload|SecretScanningAlertPayload
-|PullRequestReviewThreadPayload|IssueComment|RegistryPackagePayload|CheckSuitePayload|DiscussionCommentPayload
-|Organization|RepositoryImportPayload|RepositoryPayload|StarPayload|WatchPayload|PackagePayload|WorkflowDispatchPayload
-|SponsorshipPayload|SubIssuesPayload|ProjectColumnPayload|Team|MarketplacePurchasePayload|PushPayload|Installation
-|BranchProtectionRulePayload|PullRequestReviewCommentPayload|PullRequestRef|'ProjectsV2ItemPayload|PingPayload
-|CreatePayload|Repository|PullRequestReviewComment|TeamPayload|Enterprise|ProjectPayload|InstallationTargetPayload
-|DeploymentStatus|InstallationRepositoriesPayload|Issue|Label|Deployment|BranchProtectionConfigurationPayload
-|RepositoryRulesetPayload|SecurityAndAnalysisPayload|CommitAuthor|DeployKeyPayload|IssueDependenciesPayload
-|RepositoryAdvisoryPayload|RepositoryVulnerabilityAlertPayload|Milestone|IssuesPayload|CodeScanningAlertPayload
-|PullRequestReviewPayload|'ProjectsV2Payload|PersonalAccessTokenRequestPayload|InstallationPayload|WorkflowRun
-|DiscussionPayload|CheckSuite|StatusPayload|'ProjectsV2StatusUpdatePayload|CommonPayload|Discussion|User
-|PullRequestReview|DeletePayload|MetaPayload|DeploymentPayload|DeploymentProtectionRulePayload|LabelPayload
-|GithubAppAuthorizationPayload|PageBuildPayload|ProjectCardPayload|PullRequestPayload|TeamAddPayload|WorkflowJob
-|Release|CustomPropertyPayload|PublicPayload|MemberPayload|MilestonePayload|SecurityAdvisoryPayload|CheckRunPayload
-|CommitCommentPayload|Commit|CheckRun|MembershipPayload;
+public type GenericDataType ForkEvent|WorkflowRunEvent|GollumEvent|ReleaseEvent
+|SecretScanningAlertLocationEvent|DeploymentReviewEvent|PullRequest|SecretScanningScanEvent|IssueCommentEvent|IssuesEvent
+|DeploymentStatusEvent|OrganizationEvent|WebhookHeaders|RepositoryDispatchEvent|MergeGroupEvent
+|WorkflowJobEvent|OrgBlockEvent|DependabotAlertEvent|CustomPropertyValuesEvent|SecretScanningAlertEvent
+|PullRequestReviewThreadEvent|IssueComment|RegistryPackageEvent|CheckSuiteEvent|DiscussionCommentEvent
+|Organization|RepositoryImportEvent|RepositoryEvent|StarEvent|WatchEvent|PackageEvent|WorkflowDispatchEvent
+|SponsorshipEvent|SubIssuesEvent|ProjectColumnEvent|Team|MarketplacePurchaseEvent|PushEvent|Installation
+|BranchProtectionRuleEvent|PullRequestReviewCommentEvent|PullRequestRef|'ProjectsV2ItemEvent|PingEvent
+|CreateEvent|Repository|PullRequestReviewComment|TeamEvent|Enterprise|ProjectEvent|InstallationTargetEvent
+|DeploymentStatus|InstallationRepositoriesEvent|Issue|Label|Deployment|BranchProtectionConfigurationEvent
+|RepositoryRulesetEvent|SecurityAndAnalysisEvent|CommitAuthor|DeployKeyEvent|IssueDependenciesEvent
+|RepositoryAdvisoryEvent|RepositoryVulnerabilityAlertEvent|Milestone|CodeScanningAlertEvent
+|PullRequestReviewEvent|'ProjectsV2Event|PersonalAccessTokenRequestEvent|InstallationEvent|WorkflowRun
+|DiscussionEvent|CheckSuite|StatusEvent|'ProjectsV2StatusUpdateEvent|CommonEvent|Discussion|User
+|PullRequestReview|DeleteEvent|MetaEvent|DeploymentEvent|DeploymentProtectionRuleEvent|LabelEvent
+|GithubAppAuthorizationEvent|PageBuildEvent|ProjectCardEvent|PullRequestEvent|TeamAddEvent|WorkflowJob
+|Release|CustomPropertyEvent|PublicEvent|MemberEvent|MilestoneEvent|SecurityAdvisoryEvent|CheckRunEvent
+|CommitCommentEvent|Commit|CheckRun|MembershipEvent;

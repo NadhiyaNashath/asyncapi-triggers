@@ -212,10 +212,10 @@ service class DispatcherService {
     private function matchRemoteFuncForDeployKey(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "deploy_key_created" => {
-                check self.executeRemoteFunc(genericDataType, "deploy_key_created", "DeployKeyService", "onDeployKeyCreated");
+                check self.executeRemoteFunc(genericDataType, "deploy_key_created", "DeployKeyService", "onCreated");
             }
             "deploy_key_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "deploy_key_deleted", "DeployKeyService", "onDeployKeyDeleted");
+                check self.executeRemoteFunc(genericDataType, "deploy_key_deleted", "DeployKeyService", "onDeleted");
             }
         }
     }
@@ -223,16 +223,16 @@ service class DispatcherService {
     private function matchRemoteFuncForProjectColumn(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "project_column_moved" => {
-                check self.executeRemoteFunc(genericDataType, "project_column_moved", "ProjectColumnService", "onProjectColumnMoved");
+                check self.executeRemoteFunc(genericDataType, "project_column_moved", "ProjectColumnService", "onMoved");
             }
             "project_column_edited" => {
-                check self.executeRemoteFunc(genericDataType, "project_column_edited", "ProjectColumnService", "onProjectColumnEdited");
+                check self.executeRemoteFunc(genericDataType, "project_column_edited", "ProjectColumnService", "onEdited");
             }
             "project_column_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "project_column_deleted", "ProjectColumnService", "onProjectColumnDeleted");
+                check self.executeRemoteFunc(genericDataType, "project_column_deleted", "ProjectColumnService", "onDeleted");
             }
             "project_column_created" => {
-                check self.executeRemoteFunc(genericDataType, "project_column_created", "ProjectColumnService", "onProjectColumnCreated");
+                check self.executeRemoteFunc(genericDataType, "project_column_created", "ProjectColumnService", "onCreated");
             }
         }
     }
@@ -240,19 +240,19 @@ service class DispatcherService {
     private function matchRemoteFuncForMarketplacePurchase(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "marketplace_purchase_purchased" => {
-                check self.executeRemoteFunc(genericDataType, "marketplace_purchase_purchased", "MarketplacePurchaseService", "onMarketplacePurchasePurchased");
+                check self.executeRemoteFunc(genericDataType, "marketplace_purchase_purchased", "MarketplacePurchaseService", "onPurchased");
             }
             "marketplace_purchase_cancelled" => {
-                check self.executeRemoteFunc(genericDataType, "marketplace_purchase_cancelled", "MarketplacePurchaseService", "onMarketplacePurchaseCancelled");
+                check self.executeRemoteFunc(genericDataType, "marketplace_purchase_cancelled", "MarketplacePurchaseService", "onCancelled");
             }
             "marketplace_purchase_pending_change_cancelled" => {
-                check self.executeRemoteFunc(genericDataType, "marketplace_purchase_pending_change_cancelled", "MarketplacePurchaseService", "onMarketplacePurchasePendingChangeCancelled");
+                check self.executeRemoteFunc(genericDataType, "marketplace_purchase_pending_change_cancelled", "MarketplacePurchaseService", "onPendingChangeCancelled");
             }
             "marketplace_purchase_pending_change" => {
-                check self.executeRemoteFunc(genericDataType, "marketplace_purchase_pending_change", "MarketplacePurchaseService", "onMarketplacePurchasePendingChange");
+                check self.executeRemoteFunc(genericDataType, "marketplace_purchase_pending_change", "MarketplacePurchaseService", "onPendingChange");
             }
             "marketplace_purchase_changed" => {
-                check self.executeRemoteFunc(genericDataType, "marketplace_purchase_changed", "MarketplacePurchaseService", "onMarketplacePurchaseChanged");
+                check self.executeRemoteFunc(genericDataType, "marketplace_purchase_changed", "MarketplacePurchaseService", "onChanged");
             }
         }
     }
@@ -260,10 +260,10 @@ service class DispatcherService {
     private function matchRemoteFuncForBranchProtectionConfiguration(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "branch_protection_configuration_enabled" => {
-                check self.executeRemoteFunc(genericDataType, "branch_protection_configuration_enabled", "BranchProtectionConfigurationService", "onBranchProtectionConfigurationEnabled");
+                check self.executeRemoteFunc(genericDataType, "branch_protection_configuration_enabled", "BranchProtectionConfigurationService", "onEnabled");
             }
             "branch_protection_configuration_disabled" => {
-                check self.executeRemoteFunc(genericDataType, "branch_protection_configuration_disabled", "BranchProtectionConfigurationService", "onBranchProtectionConfigurationDisabled");
+                check self.executeRemoteFunc(genericDataType, "branch_protection_configuration_disabled", "BranchProtectionConfigurationService", "onDisabled");
             }
         }
     }
@@ -271,67 +271,67 @@ service class DispatcherService {
     private function matchRemoteFuncForPullRequest(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "pull_request_enqueued" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_enqueued", "PullRequestService", "onPullRequestEnqueued");
+                check self.executeRemoteFunc(genericDataType, "pull_request_enqueued", "PullRequestService", "onEnqueued");
             }
             "pull_request_review_request_removed" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_review_request_removed", "PullRequestService", "onPullRequestReviewRequestRemoved");
+                check self.executeRemoteFunc(genericDataType, "pull_request_review_request_removed", "PullRequestService", "onReviewRequestRemoved");
             }
             "pull_request_opened" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_opened", "PullRequestService", "onPullRequestOpened");
+                check self.executeRemoteFunc(genericDataType, "pull_request_opened", "PullRequestService", "onOpened");
             }
             "pull_request_ready_for_review" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_ready_for_review", "PullRequestService", "onPullRequestReadyForReview");
+                check self.executeRemoteFunc(genericDataType, "pull_request_ready_for_review", "PullRequestService", "onReadyForReview");
             }
             "pull_request_labeled" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_labeled", "PullRequestService", "onPullRequestLabeled");
+                check self.executeRemoteFunc(genericDataType, "pull_request_labeled", "PullRequestService", "onLabeled");
             }
             "pull_request_unassigned" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_unassigned", "PullRequestService", "onPullRequestUnassigned");
+                check self.executeRemoteFunc(genericDataType, "pull_request_unassigned", "PullRequestService", "onUnassigned");
             }
             "pull_request_edited" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_edited", "PullRequestService", "onPullRequestEdited");
+                check self.executeRemoteFunc(genericDataType, "pull_request_edited", "PullRequestService", "onEdited");
             }
             "pull_request_synchronize" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_synchronize", "PullRequestService", "onPullRequestSynchronize");
+                check self.executeRemoteFunc(genericDataType, "pull_request_synchronize", "PullRequestService", "onSynchronize");
             }
             "pull_request_review_requested" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_review_requested", "PullRequestService", "onPullRequestReviewRequested");
+                check self.executeRemoteFunc(genericDataType, "pull_request_review_requested", "PullRequestService", "onReviewRequested");
             }
             "pull_request_reopened" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_reopened", "PullRequestService", "onPullRequestReopened");
+                check self.executeRemoteFunc(genericDataType, "pull_request_reopened", "PullRequestService", "onReopened");
             }
             "pull_request_auto_merge_disabled" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_auto_merge_disabled", "PullRequestService", "onPullRequestAutoMergeDisabled");
+                check self.executeRemoteFunc(genericDataType, "pull_request_auto_merge_disabled", "PullRequestService", "onAutoMergeDisabled");
             }
             "pull_request_locked" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_locked", "PullRequestService", "onPullRequestLocked");
+                check self.executeRemoteFunc(genericDataType, "pull_request_locked", "PullRequestService", "onLocked");
             }
             "pull_request_auto_merge_enabled" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_auto_merge_enabled", "PullRequestService", "onPullRequestAutoMergeEnabled");
+                check self.executeRemoteFunc(genericDataType, "pull_request_auto_merge_enabled", "PullRequestService", "onAutoMergeEnabled");
             }
             "pull_request_milestoned" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_milestoned", "PullRequestService", "onPullRequestMilestoned");
+                check self.executeRemoteFunc(genericDataType, "pull_request_milestoned", "PullRequestService", "onMilestoned");
             }
             "pull_request_dequeued" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_dequeued", "PullRequestService", "onPullRequestDequeued");
+                check self.executeRemoteFunc(genericDataType, "pull_request_dequeued", "PullRequestService", "onDequeued");
             }
             "pull_request_unlabeled" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_unlabeled", "PullRequestService", "onPullRequestUnlabeled");
+                check self.executeRemoteFunc(genericDataType, "pull_request_unlabeled", "PullRequestService", "onUnlabeled");
             }
             "pull_request_closed" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_closed", "PullRequestService", "onPullRequestClosed");
+                check self.executeRemoteFunc(genericDataType, "pull_request_closed", "PullRequestService", "onClosed");
             }
             "pull_request_unlocked" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_unlocked", "PullRequestService", "onPullRequestUnlocked");
+                check self.executeRemoteFunc(genericDataType, "pull_request_unlocked", "PullRequestService", "onUnlocked");
             }
             "pull_request_assigned" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_assigned", "PullRequestService", "onPullRequestAssigned");
+                check self.executeRemoteFunc(genericDataType, "pull_request_assigned", "PullRequestService", "onAssigned");
             }
             "pull_request_converted_to_draft" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_converted_to_draft", "PullRequestService", "onPullRequestConvertedToDraft");
+                check self.executeRemoteFunc(genericDataType, "pull_request_converted_to_draft", "PullRequestService", "onConvertedToDraft");
             }
             "pull_request_demilestoned" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_demilestoned", "PullRequestService", "onPullRequestDemilestoned");
+                check self.executeRemoteFunc(genericDataType, "pull_request_demilestoned", "PullRequestService", "onDemilestoned");
             }
         }
     }
@@ -339,13 +339,13 @@ service class DispatcherService {
     private function matchRemoteFuncForLabel(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "label_edited" => {
-                check self.executeRemoteFunc(genericDataType, "label_edited", "LabelService", "onLabelEdited");
+                check self.executeRemoteFunc(genericDataType, "label_edited", "LabelService", "onEdited");
             }
             "label_created" => {
-                check self.executeRemoteFunc(genericDataType, "label_created", "LabelService", "onLabelCreated");
+                check self.executeRemoteFunc(genericDataType, "label_created", "LabelService", "onCreated");
             }
             "label_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "label_deleted", "LabelService", "onLabelDeleted");
+                check self.executeRemoteFunc(genericDataType, "label_deleted", "LabelService", "onDeleted");
             }
         }
     }
@@ -369,25 +369,25 @@ service class DispatcherService {
     private function matchRemoteFuncForCodeScanningAlert(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "code_scanning_alert_appeared_in_branch" => {
-                check self.executeRemoteFunc(genericDataType, "code_scanning_alert_appeared_in_branch", "CodeScanningAlertService", "onCodeScanningAlertAppearedInBranch");
+                check self.executeRemoteFunc(genericDataType, "code_scanning_alert_appeared_in_branch", "CodeScanningAlertService", "onAppearedInBranch");
             }
             "code_scanning_alert_closed_by_user" => {
-                check self.executeRemoteFunc(genericDataType, "code_scanning_alert_closed_by_user", "CodeScanningAlertService", "onCodeScanningAlertClosedByUser");
+                check self.executeRemoteFunc(genericDataType, "code_scanning_alert_closed_by_user", "CodeScanningAlertService", "onClosedByUser");
             }
             "code_scanning_alert_created" => {
-                check self.executeRemoteFunc(genericDataType, "code_scanning_alert_created", "CodeScanningAlertService", "onCodeScanningAlertCreated");
+                check self.executeRemoteFunc(genericDataType, "code_scanning_alert_created", "CodeScanningAlertService", "onCreated");
             }
             "code_scanning_alert_fixed" => {
-                check self.executeRemoteFunc(genericDataType, "code_scanning_alert_fixed", "CodeScanningAlertService", "onCodeScanningAlertFixed");
+                check self.executeRemoteFunc(genericDataType, "code_scanning_alert_fixed", "CodeScanningAlertService", "onFixed");
             }
             "code_scanning_alert_reopened" => {
-                check self.executeRemoteFunc(genericDataType, "code_scanning_alert_reopened", "CodeScanningAlertService", "onCodeScanningAlertReopened");
+                check self.executeRemoteFunc(genericDataType, "code_scanning_alert_reopened", "CodeScanningAlertService", "onReopened");
             }
             "code_scanning_alert_reopened_by_user" => {
-                check self.executeRemoteFunc(genericDataType, "code_scanning_alert_reopened_by_user", "CodeScanningAlertService", "onCodeScanningAlertReopenedByUser");
+                check self.executeRemoteFunc(genericDataType, "code_scanning_alert_reopened_by_user", "CodeScanningAlertService", "onReopenedByUser");
             }
             "code_scanning_alert_updated_assignment" => {
-                check self.executeRemoteFunc(genericDataType, "code_scanning_alert_updated_assignment", "CodeScanningAlertService", "onCodeScanningAlertUpdatedAssignment");
+                check self.executeRemoteFunc(genericDataType, "code_scanning_alert_updated_assignment", "CodeScanningAlertService", "onUpdatedAssignment");
             }
         }
     }
@@ -395,10 +395,10 @@ service class DispatcherService {
     private function matchRemoteFuncForMembership(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "membership_added" => {
-                check self.executeRemoteFunc(genericDataType, "membership_added", "MembershipService", "onMembershipAdded");
+                check self.executeRemoteFunc(genericDataType, "membership_added", "MembershipService", "onAdded");
             }
             "membership_removed" => {
-                check self.executeRemoteFunc(genericDataType, "membership_removed", "MembershipService", "onMembershipRemoved");
+                check self.executeRemoteFunc(genericDataType, "membership_removed", "MembershipService", "onRemoved");
             }
         }
     }
@@ -406,25 +406,25 @@ service class DispatcherService {
     private function matchRemoteFuncForSecretScanningAlert(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "secret_scanning_alert_assigned" => {
-                check self.executeRemoteFunc(genericDataType, "secret_scanning_alert_assigned", "SecretScanningAlertService", "onSecretScanningAlertAssigned");
+                check self.executeRemoteFunc(genericDataType, "secret_scanning_alert_assigned", "SecretScanningAlertService", "onAssigned");
             }
             "secret_scanning_alert_reopened" => {
-                check self.executeRemoteFunc(genericDataType, "secret_scanning_alert_reopened", "SecretScanningAlertService", "onSecretScanningAlertReopened");
+                check self.executeRemoteFunc(genericDataType, "secret_scanning_alert_reopened", "SecretScanningAlertService", "onReopened");
             }
             "secret_scanning_alert_unassigned" => {
-                check self.executeRemoteFunc(genericDataType, "secret_scanning_alert_unassigned", "SecretScanningAlertService", "onSecretScanningAlertUnassigned");
+                check self.executeRemoteFunc(genericDataType, "secret_scanning_alert_unassigned", "SecretScanningAlertService", "onUnassigned");
             }
             "secret_scanning_alert_created" => {
-                check self.executeRemoteFunc(genericDataType, "secret_scanning_alert_created", "SecretScanningAlertService", "onSecretScanningAlertCreated");
+                check self.executeRemoteFunc(genericDataType, "secret_scanning_alert_created", "SecretScanningAlertService", "onCreated");
             }
             "secret_scanning_alert_publicly_leaked" => {
-                check self.executeRemoteFunc(genericDataType, "secret_scanning_alert_publicly_leaked", "SecretScanningAlertService", "onSecretScanningAlertPubliclyLeaked");
+                check self.executeRemoteFunc(genericDataType, "secret_scanning_alert_publicly_leaked", "SecretScanningAlertService", "onPubliclyLeaked");
             }
             "secret_scanning_alert_validated" => {
-                check self.executeRemoteFunc(genericDataType, "secret_scanning_alert_validated", "SecretScanningAlertService", "onSecretScanningAlertValidated");
+                check self.executeRemoteFunc(genericDataType, "secret_scanning_alert_validated", "SecretScanningAlertService", "onValidated");
             }
             "secret_scanning_alert_resolved" => {
-                check self.executeRemoteFunc(genericDataType, "secret_scanning_alert_resolved", "SecretScanningAlertService", "onSecretScanningAlertResolved");
+                check self.executeRemoteFunc(genericDataType, "secret_scanning_alert_resolved", "SecretScanningAlertService", "onResolved");
             }
         }
     }
@@ -440,13 +440,13 @@ service class DispatcherService {
     private function matchRemoteFuncForMember(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "member_edited" => {
-                check self.executeRemoteFunc(genericDataType, "member_edited", "MemberService", "onMemberEdited");
+                check self.executeRemoteFunc(genericDataType, "member_edited", "MemberService", "onEdited");
             }
             "member_added" => {
-                check self.executeRemoteFunc(genericDataType, "member_added", "MemberService", "onMemberAdded");
+                check self.executeRemoteFunc(genericDataType, "member_added", "MemberService", "onAdded");
             }
             "member_removed" => {
-                check self.executeRemoteFunc(genericDataType, "member_removed", "MemberService", "onMemberRemoved");
+                check self.executeRemoteFunc(genericDataType, "member_removed", "MemberService", "onRemoved");
             }
         }
     }
@@ -478,16 +478,16 @@ service class DispatcherService {
     private function matchRemoteFuncForPersonalAccessTokenRequest(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "personal_access_token_request_created" => {
-                check self.executeRemoteFunc(genericDataType, "personal_access_token_request_created", "PersonalAccessTokenRequestService", "onPersonalAccessTokenRequestCreated");
+                check self.executeRemoteFunc(genericDataType, "personal_access_token_request_created", "PersonalAccessTokenRequestService", "onCreated");
             }
             "personal_access_token_request_approved" => {
-                check self.executeRemoteFunc(genericDataType, "personal_access_token_request_approved", "PersonalAccessTokenRequestService", "onPersonalAccessTokenRequestApproved");
+                check self.executeRemoteFunc(genericDataType, "personal_access_token_request_approved", "PersonalAccessTokenRequestService", "onApproved");
             }
             "personal_access_token_request_denied" => {
-                check self.executeRemoteFunc(genericDataType, "personal_access_token_request_denied", "PersonalAccessTokenRequestService", "onPersonalAccessTokenRequestDenied");
+                check self.executeRemoteFunc(genericDataType, "personal_access_token_request_denied", "PersonalAccessTokenRequestService", "onDenied");
             }
             "personal_access_token_request_cancelled" => {
-                check self.executeRemoteFunc(genericDataType, "personal_access_token_request_cancelled", "PersonalAccessTokenRequestService", "onPersonalAccessTokenRequestCancelled");
+                check self.executeRemoteFunc(genericDataType, "personal_access_token_request_cancelled", "PersonalAccessTokenRequestService", "onCancelled");
             }
         }
     }
@@ -495,16 +495,16 @@ service class DispatcherService {
     private function matchRemoteFuncForSubIssues(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "sub_issues_child_issue_added" => {
-                check self.executeRemoteFunc(genericDataType, "sub_issues_child_issue_added", "SubIssuesService", "onSubIssuesChildIssueAdded");
+                check self.executeRemoteFunc(genericDataType, "sub_issues_child_issue_added", "SubIssuesService", "onChildIssueAdded");
             }
             "sub_issues_parent_issue_added" => {
-                check self.executeRemoteFunc(genericDataType, "sub_issues_parent_issue_added", "SubIssuesService", "onSubIssuesParentIssueAdded");
+                check self.executeRemoteFunc(genericDataType, "sub_issues_parent_issue_added", "SubIssuesService", "onParentIssueAdded");
             }
             "sub_issues_child_issue_removed" => {
-                check self.executeRemoteFunc(genericDataType, "sub_issues_child_issue_removed", "SubIssuesService", "onSubIssuesChildIssueRemoved");
+                check self.executeRemoteFunc(genericDataType, "sub_issues_child_issue_removed", "SubIssuesService", "onChildIssueRemoved");
             }
             "sub_issues_parent_issue_removed" => {
-                check self.executeRemoteFunc(genericDataType, "sub_issues_parent_issue_removed", "SubIssuesService", "onSubIssuesParentIssueRemoved");
+                check self.executeRemoteFunc(genericDataType, "sub_issues_parent_issue_removed", "SubIssuesService", "onParentIssueRemoved");
             }
         }
     }
@@ -512,13 +512,13 @@ service class DispatcherService {
     private function matchRemoteFuncForRepositoryRuleset(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "repository_ruleset_created" => {
-                check self.executeRemoteFunc(genericDataType, "repository_ruleset_created", "RepositoryRulesetService", "onRepositoryRulesetCreated");
+                check self.executeRemoteFunc(genericDataType, "repository_ruleset_created", "RepositoryRulesetService", "onCreated");
             }
             "repository_ruleset_edited" => {
-                check self.executeRemoteFunc(genericDataType, "repository_ruleset_edited", "RepositoryRulesetService", "onRepositoryRulesetEdited");
+                check self.executeRemoteFunc(genericDataType, "repository_ruleset_edited", "RepositoryRulesetService", "onEdited");
             }
             "repository_ruleset_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "repository_ruleset_deleted", "RepositoryRulesetService", "onRepositoryRulesetDeleted");
+                check self.executeRemoteFunc(genericDataType, "repository_ruleset_deleted", "RepositoryRulesetService", "onDeleted");
             }
         }
     }
@@ -526,19 +526,19 @@ service class DispatcherService {
     private function matchRemoteFuncForMilestone(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "milestone_created" => {
-                check self.executeRemoteFunc(genericDataType, "milestone_created", "MilestoneService", "onMilestoneCreated");
+                check self.executeRemoteFunc(genericDataType, "milestone_created", "MilestoneService", "onCreated");
             }
             "milestone_edited" => {
-                check self.executeRemoteFunc(genericDataType, "milestone_edited", "MilestoneService", "onMilestoneEdited");
+                check self.executeRemoteFunc(genericDataType, "milestone_edited", "MilestoneService", "onEdited");
             }
             "milestone_opened" => {
-                check self.executeRemoteFunc(genericDataType, "milestone_opened", "MilestoneService", "onMilestoneOpened");
+                check self.executeRemoteFunc(genericDataType, "milestone_opened", "MilestoneService", "onOpened");
             }
             "milestone_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "milestone_deleted", "MilestoneService", "onMilestoneDeleted");
+                check self.executeRemoteFunc(genericDataType, "milestone_deleted", "MilestoneService", "onDeleted");
             }
             "milestone_closed" => {
-                check self.executeRemoteFunc(genericDataType, "milestone_closed", "MilestoneService", "onMilestoneClosed");
+                check self.executeRemoteFunc(genericDataType, "milestone_closed", "MilestoneService", "onClosed");
             }
         }
     }
@@ -554,13 +554,13 @@ service class DispatcherService {
     private function matchRemoteFuncForWorkflowRun(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "workflow_run_in_progress" => {
-                check self.executeRemoteFunc(genericDataType, "workflow_run_in_progress", "WorkflowRunService", "onWorkflowRunInProgress");
+                check self.executeRemoteFunc(genericDataType, "workflow_run_in_progress", "WorkflowRunService", "onInProgress");
             }
             "workflow_run_completed" => {
-                check self.executeRemoteFunc(genericDataType, "workflow_run_completed", "WorkflowRunService", "onWorkflowRunCompleted");
+                check self.executeRemoteFunc(genericDataType, "workflow_run_completed", "WorkflowRunService", "onCompleted");
             }
             "workflow_run_requested" => {
-                check self.executeRemoteFunc(genericDataType, "workflow_run_requested", "WorkflowRunService", "onWorkflowRunRequested");
+                check self.executeRemoteFunc(genericDataType, "workflow_run_requested", "WorkflowRunService", "onRequested");
             }
         }
     }
@@ -568,13 +568,13 @@ service class DispatcherService {
     private function matchRemoteFuncForProjectsV2statusUpdate(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "projects_v2_status_update_edited" => {
-                check self.executeRemoteFunc(genericDataType, "projects_v2_status_update_edited", "ProjectsV2statusUpdateService", "onProjectsV2StatusUpdateEdited");
+                check self.executeRemoteFunc(genericDataType, "projects_v2_status_update_edited", "ProjectsV2statusUpdateService", "onEdited");
             }
             "projects_v2_status_update_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "projects_v2_status_update_deleted", "ProjectsV2statusUpdateService", "onProjectsV2StatusUpdateDeleted");
+                check self.executeRemoteFunc(genericDataType, "projects_v2_status_update_deleted", "ProjectsV2statusUpdateService", "onDeleted");
             }
             "projects_v2_status_update_created" => {
-                check self.executeRemoteFunc(genericDataType, "projects_v2_status_update_created", "ProjectsV2statusUpdateService", "onProjectsV2StatusUpdateCreated");
+                check self.executeRemoteFunc(genericDataType, "projects_v2_status_update_created", "ProjectsV2statusUpdateService", "onCreated");
             }
         }
     }
@@ -582,25 +582,25 @@ service class DispatcherService {
     private function matchRemoteFuncForProjectsV2item(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "projects_v2_item_edited" => {
-                check self.executeRemoteFunc(genericDataType, "projects_v2_item_edited", "ProjectsV2itemService", "onProjectsV2ItemEdited");
+                check self.executeRemoteFunc(genericDataType, "projects_v2_item_edited", "ProjectsV2itemService", "onEdited");
             }
             "projects_v2_item_created" => {
-                check self.executeRemoteFunc(genericDataType, "projects_v2_item_created", "ProjectsV2itemService", "onProjectsV2ItemCreated");
+                check self.executeRemoteFunc(genericDataType, "projects_v2_item_created", "ProjectsV2itemService", "onCreated");
             }
             "projects_v2_item_archived" => {
-                check self.executeRemoteFunc(genericDataType, "projects_v2_item_archived", "ProjectsV2itemService", "onProjectsV2ItemArchived");
+                check self.executeRemoteFunc(genericDataType, "projects_v2_item_archived", "ProjectsV2itemService", "onArchived");
             }
             "projects_v2_item_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "projects_v2_item_deleted", "ProjectsV2itemService", "onProjectsV2ItemDeleted");
+                check self.executeRemoteFunc(genericDataType, "projects_v2_item_deleted", "ProjectsV2itemService", "onDeleted");
             }
             "projects_v2_item_restored" => {
-                check self.executeRemoteFunc(genericDataType, "projects_v2_item_restored", "ProjectsV2itemService", "onProjectsV2ItemRestored");
+                check self.executeRemoteFunc(genericDataType, "projects_v2_item_restored", "ProjectsV2itemService", "onRestored");
             }
             "projects_v2_item_reordered" => {
-                check self.executeRemoteFunc(genericDataType, "projects_v2_item_reordered", "ProjectsV2itemService", "onProjectsV2ItemReordered");
+                check self.executeRemoteFunc(genericDataType, "projects_v2_item_reordered", "ProjectsV2itemService", "onReordered");
             }
             "projects_v2_item_converted" => {
-                check self.executeRemoteFunc(genericDataType, "projects_v2_item_converted", "ProjectsV2itemService", "onProjectsV2ItemConverted");
+                check self.executeRemoteFunc(genericDataType, "projects_v2_item_converted", "ProjectsV2itemService", "onConverted");
             }
         }
     }
@@ -608,22 +608,22 @@ service class DispatcherService {
     private function matchRemoteFuncForSponsorship(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "sponsorship_cancelled" => {
-                check self.executeRemoteFunc(genericDataType, "sponsorship_cancelled", "SponsorshipService", "onSponsorshipCancelled");
+                check self.executeRemoteFunc(genericDataType, "sponsorship_cancelled", "SponsorshipService", "onCancelled");
             }
             "sponsorship_edited" => {
-                check self.executeRemoteFunc(genericDataType, "sponsorship_edited", "SponsorshipService", "onSponsorshipEdited");
+                check self.executeRemoteFunc(genericDataType, "sponsorship_edited", "SponsorshipService", "onEdited");
             }
             "sponsorship_tier_changed" => {
-                check self.executeRemoteFunc(genericDataType, "sponsorship_tier_changed", "SponsorshipService", "onSponsorshipTierChanged");
+                check self.executeRemoteFunc(genericDataType, "sponsorship_tier_changed", "SponsorshipService", "onTierChanged");
             }
             "sponsorship_pending_cancellation" => {
-                check self.executeRemoteFunc(genericDataType, "sponsorship_pending_cancellation", "SponsorshipService", "onSponsorshipPendingCancellation");
+                check self.executeRemoteFunc(genericDataType, "sponsorship_pending_cancellation", "SponsorshipService", "onPendingCancellation");
             }
             "sponsorship_created" => {
-                check self.executeRemoteFunc(genericDataType, "sponsorship_created", "SponsorshipService", "onSponsorshipCreated");
+                check self.executeRemoteFunc(genericDataType, "sponsorship_created", "SponsorshipService", "onCreated");
             }
             "sponsorship_pending_tier_change" => {
-                check self.executeRemoteFunc(genericDataType, "sponsorship_pending_tier_change", "SponsorshipService", "onSponsorshipPendingTierChange");
+                check self.executeRemoteFunc(genericDataType, "sponsorship_pending_tier_change", "SponsorshipService", "onPendingTierChange");
             }
         }
     }
@@ -631,10 +631,10 @@ service class DispatcherService {
     private function matchRemoteFuncForMergeGroup(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "merge_group_destroyed" => {
-                check self.executeRemoteFunc(genericDataType, "merge_group_destroyed", "MergeGroupService", "onMergeGroupDestroyed");
+                check self.executeRemoteFunc(genericDataType, "merge_group_destroyed", "MergeGroupService", "onDestroyed");
             }
             "merge_group_checks_requested" => {
-                check self.executeRemoteFunc(genericDataType, "merge_group_checks_requested", "MergeGroupService", "onMergeGroupChecksRequested");
+                check self.executeRemoteFunc(genericDataType, "merge_group_checks_requested", "MergeGroupService", "onChecksRequested");
             }
         }
     }
@@ -642,19 +642,19 @@ service class DispatcherService {
     private function matchRemoteFuncForProject(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "project_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "project_deleted", "ProjectService", "onProjectDeleted");
+                check self.executeRemoteFunc(genericDataType, "project_deleted", "ProjectService", "onDeleted");
             }
             "project_created" => {
-                check self.executeRemoteFunc(genericDataType, "project_created", "ProjectService", "onProjectCreated");
+                check self.executeRemoteFunc(genericDataType, "project_created", "ProjectService", "onCreated");
             }
             "project_closed" => {
-                check self.executeRemoteFunc(genericDataType, "project_closed", "ProjectService", "onProjectClosed");
+                check self.executeRemoteFunc(genericDataType, "project_closed", "ProjectService", "onClosed");
             }
             "project_reopened" => {
-                check self.executeRemoteFunc(genericDataType, "project_reopened", "ProjectService", "onProjectReopened");
+                check self.executeRemoteFunc(genericDataType, "project_reopened", "ProjectService", "onReopened");
             }
             "project_edited" => {
-                check self.executeRemoteFunc(genericDataType, "project_edited", "ProjectService", "onProjectEdited");
+                check self.executeRemoteFunc(genericDataType, "project_edited", "ProjectService", "onEdited");
             }
         }
     }
@@ -662,10 +662,10 @@ service class DispatcherService {
     private function matchRemoteFuncForOrgBlock(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "org_block_blocked" => {
-                check self.executeRemoteFunc(genericDataType, "org_block_blocked", "OrgBlockService", "onOrgBlockBlocked");
+                check self.executeRemoteFunc(genericDataType, "org_block_blocked", "OrgBlockService", "onBlocked");
             }
             "org_block_unblocked" => {
-                check self.executeRemoteFunc(genericDataType, "org_block_unblocked", "OrgBlockService", "onOrgBlockUnblocked");
+                check self.executeRemoteFunc(genericDataType, "org_block_unblocked", "OrgBlockService", "onUnblocked");
             }
         }
     }
@@ -689,13 +689,13 @@ service class DispatcherService {
     private function matchRemoteFuncForCheckSuite(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "check_suite_completed" => {
-                check self.executeRemoteFunc(genericDataType, "check_suite_completed", "CheckSuiteService", "onCheckSuiteCompleted");
+                check self.executeRemoteFunc(genericDataType, "check_suite_completed", "CheckSuiteService", "onCompleted");
             }
             "check_suite_requested" => {
-                check self.executeRemoteFunc(genericDataType, "check_suite_requested", "CheckSuiteService", "onCheckSuiteRequested");
+                check self.executeRemoteFunc(genericDataType, "check_suite_requested", "CheckSuiteService", "onRequested");
             }
             "check_suite_rerequested" => {
-                check self.executeRemoteFunc(genericDataType, "check_suite_rerequested", "CheckSuiteService", "onCheckSuiteRerequested");
+                check self.executeRemoteFunc(genericDataType, "check_suite_rerequested", "CheckSuiteService", "onRerequested");
             }
         }
     }
@@ -711,19 +711,19 @@ service class DispatcherService {
     private function matchRemoteFuncForIssueComment(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "issue_comment_edited" => {
-                check self.executeRemoteFunc(genericDataType, "issue_comment_edited", "IssueCommentService", "onIssueCommentEdited");
+                check self.executeRemoteFunc(genericDataType, "issue_comment_edited", "IssueCommentService", "onEdited");
             }
             "issue_comment_pinned" => {
-                check self.executeRemoteFunc(genericDataType, "issue_comment_pinned", "IssueCommentService", "onIssueCommentPinned");
+                check self.executeRemoteFunc(genericDataType, "issue_comment_pinned", "IssueCommentService", "onPinned");
             }
             "issue_comment_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "issue_comment_deleted", "IssueCommentService", "onIssueCommentDeleted");
+                check self.executeRemoteFunc(genericDataType, "issue_comment_deleted", "IssueCommentService", "onDeleted");
             }
             "issue_comment_created" => {
-                check self.executeRemoteFunc(genericDataType, "issue_comment_created", "IssueCommentService", "onIssueCommentCreated");
+                check self.executeRemoteFunc(genericDataType, "issue_comment_created", "IssueCommentService", "onCreated");
             }
             "issue_comment_unpinned" => {
-                check self.executeRemoteFunc(genericDataType, "issue_comment_unpinned", "IssueCommentService", "onIssueCommentUnpinned");
+                check self.executeRemoteFunc(genericDataType, "issue_comment_unpinned", "IssueCommentService", "onUnpinned");
             }
         }
     }
@@ -731,13 +731,13 @@ service class DispatcherService {
     private function matchRemoteFuncForSecurityAdvisory(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "security_advisory_withdrawn" => {
-                check self.executeRemoteFunc(genericDataType, "security_advisory_withdrawn", "SecurityAdvisoryService", "onSecurityAdvisoryWithdrawn");
+                check self.executeRemoteFunc(genericDataType, "security_advisory_withdrawn", "SecurityAdvisoryService", "onWithdrawn");
             }
             "security_advisory_published" => {
-                check self.executeRemoteFunc(genericDataType, "security_advisory_published", "SecurityAdvisoryService", "onSecurityAdvisoryPublished");
+                check self.executeRemoteFunc(genericDataType, "security_advisory_published", "SecurityAdvisoryService", "onPublished");
             }
             "security_advisory_updated" => {
-                check self.executeRemoteFunc(genericDataType, "security_advisory_updated", "SecurityAdvisoryService", "onSecurityAdvisoryUpdated");
+                check self.executeRemoteFunc(genericDataType, "security_advisory_updated", "SecurityAdvisoryService", "onUpdated");
             }
         }
     }
@@ -745,10 +745,10 @@ service class DispatcherService {
     private function matchRemoteFuncForPackage(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "package_published" => {
-                check self.executeRemoteFunc(genericDataType, "package_published", "PackageService", "onPackagePublished");
+                check self.executeRemoteFunc(genericDataType, "package_published", "PackageService", "onPublished");
             }
             "package_updated" => {
-                check self.executeRemoteFunc(genericDataType, "package_updated", "PackageService", "onPackageUpdated");
+                check self.executeRemoteFunc(genericDataType, "package_updated", "PackageService", "onUpdated");
             }
         }
     }
@@ -756,49 +756,49 @@ service class DispatcherService {
     private function matchRemoteFuncForDiscussion(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "discussion_unanswered" => {
-                check self.executeRemoteFunc(genericDataType, "discussion_unanswered", "DiscussionService", "onDiscussionUnanswered");
+                check self.executeRemoteFunc(genericDataType, "discussion_unanswered", "DiscussionService", "onUnanswered");
             }
             "discussion_created" => {
-                check self.executeRemoteFunc(genericDataType, "discussion_created", "DiscussionService", "onDiscussionCreated");
+                check self.executeRemoteFunc(genericDataType, "discussion_created", "DiscussionService", "onCreated");
             }
             "discussion_transferred" => {
-                check self.executeRemoteFunc(genericDataType, "discussion_transferred", "DiscussionService", "onDiscussionTransferred");
+                check self.executeRemoteFunc(genericDataType, "discussion_transferred", "DiscussionService", "onTransferred");
             }
             "discussion_category_changed" => {
-                check self.executeRemoteFunc(genericDataType, "discussion_category_changed", "DiscussionService", "onDiscussionCategoryChanged");
+                check self.executeRemoteFunc(genericDataType, "discussion_category_changed", "DiscussionService", "onCategoryChanged");
             }
             "discussion_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "discussion_deleted", "DiscussionService", "onDiscussionDeleted");
+                check self.executeRemoteFunc(genericDataType, "discussion_deleted", "DiscussionService", "onDeleted");
             }
             "discussion_unlocked" => {
-                check self.executeRemoteFunc(genericDataType, "discussion_unlocked", "DiscussionService", "onDiscussionUnlocked");
+                check self.executeRemoteFunc(genericDataType, "discussion_unlocked", "DiscussionService", "onUnlocked");
             }
             "discussion_pinned" => {
-                check self.executeRemoteFunc(genericDataType, "discussion_pinned", "DiscussionService", "onDiscussionPinned");
+                check self.executeRemoteFunc(genericDataType, "discussion_pinned", "DiscussionService", "onPinned");
             }
             "discussion_edited" => {
-                check self.executeRemoteFunc(genericDataType, "discussion_edited", "DiscussionService", "onDiscussionEdited");
+                check self.executeRemoteFunc(genericDataType, "discussion_edited", "DiscussionService", "onEdited");
             }
             "discussion_reopened" => {
-                check self.executeRemoteFunc(genericDataType, "discussion_reopened", "DiscussionService", "onDiscussionReopened");
+                check self.executeRemoteFunc(genericDataType, "discussion_reopened", "DiscussionService", "onReopened");
             }
             "discussion_answered" => {
-                check self.executeRemoteFunc(genericDataType, "discussion_answered", "DiscussionService", "onDiscussionAnswered");
+                check self.executeRemoteFunc(genericDataType, "discussion_answered", "DiscussionService", "onAnswered");
             }
             "discussion_closed" => {
-                check self.executeRemoteFunc(genericDataType, "discussion_closed", "DiscussionService", "onDiscussionClosed");
+                check self.executeRemoteFunc(genericDataType, "discussion_closed", "DiscussionService", "onClosed");
             }
             "discussion_unlabeled" => {
-                check self.executeRemoteFunc(genericDataType, "discussion_unlabeled", "DiscussionService", "onDiscussionUnlabeled");
+                check self.executeRemoteFunc(genericDataType, "discussion_unlabeled", "DiscussionService", "onUnlabeled");
             }
             "discussion_labeled" => {
-                check self.executeRemoteFunc(genericDataType, "discussion_labeled", "DiscussionService", "onDiscussionLabeled");
+                check self.executeRemoteFunc(genericDataType, "discussion_labeled", "DiscussionService", "onLabeled");
             }
             "discussion_unpinned" => {
-                check self.executeRemoteFunc(genericDataType, "discussion_unpinned", "DiscussionService", "onDiscussionUnpinned");
+                check self.executeRemoteFunc(genericDataType, "discussion_unpinned", "DiscussionService", "onUnpinned");
             }
             "discussion_locked" => {
-                check self.executeRemoteFunc(genericDataType, "discussion_locked", "DiscussionService", "onDiscussionLocked");
+                check self.executeRemoteFunc(genericDataType, "discussion_locked", "DiscussionService", "onLocked");
             }
         }
     }
@@ -814,13 +814,13 @@ service class DispatcherService {
     private function matchRemoteFuncForPullRequestReview(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "pull_request_review_submitted" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_review_submitted", "PullRequestReviewService", "onPullRequestReviewSubmitted");
+                check self.executeRemoteFunc(genericDataType, "pull_request_review_submitted", "PullRequestReviewService", "onSubmitted");
             }
             "pull_request_review_edited" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_review_edited", "PullRequestReviewService", "onPullRequestReviewEdited");
+                check self.executeRemoteFunc(genericDataType, "pull_request_review_edited", "PullRequestReviewService", "onEdited");
             }
             "pull_request_review_dismissed" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_review_dismissed", "PullRequestReviewService", "onPullRequestReviewDismissed");
+                check self.executeRemoteFunc(genericDataType, "pull_request_review_dismissed", "PullRequestReviewService", "onDismissed");
             }
         }
     }
@@ -828,19 +828,19 @@ service class DispatcherService {
     private function matchRemoteFuncForOrganization(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "organization_member_added" => {
-                check self.executeRemoteFunc(genericDataType, "organization_member_added", "OrganizationService", "onOrganizationMemberAdded");
+                check self.executeRemoteFunc(genericDataType, "organization_member_added", "OrganizationService", "onAdded");
             }
             "organization_member_removed" => {
-                check self.executeRemoteFunc(genericDataType, "organization_member_removed", "OrganizationService", "onOrganizationMemberRemoved");
+                check self.executeRemoteFunc(genericDataType, "organization_member_removed", "OrganizationService", "onRemoved");
             }
             "organization_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "organization_deleted", "OrganizationService", "onOrganizationDeleted");
+                check self.executeRemoteFunc(genericDataType, "organization_deleted", "OrganizationService", "onDeleted");
             }
             "organization_renamed" => {
-                check self.executeRemoteFunc(genericDataType, "organization_renamed", "OrganizationService", "onOrganizationRenamed");
+                check self.executeRemoteFunc(genericDataType, "organization_renamed", "OrganizationService", "onRenamed");
             }
             "organization_member_invited" => {
-                check self.executeRemoteFunc(genericDataType, "organization_member_invited", "OrganizationService", "onOrganizationMemberInvited");
+                check self.executeRemoteFunc(genericDataType, "organization_member_invited", "OrganizationService", "onMemberInvited");
             }
         }
     }
@@ -848,58 +848,58 @@ service class DispatcherService {
     private function matchRemoteFuncForIssues(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "issues_reopened" => {
-                check self.executeRemoteFunc(genericDataType, "issues_reopened", "IssuesService", "onIssuesReopened");
+                check self.executeRemoteFunc(genericDataType, "issues_reopened", "IssuesService", "onReopened");
             }
             "issues_transferred" => {
-                check self.executeRemoteFunc(genericDataType, "issues_transferred", "IssuesService", "onIssuesTransferred");
+                check self.executeRemoteFunc(genericDataType, "issues_transferred", "IssuesService", "onTransferred");
             }
             "issues_unpinned" => {
-                check self.executeRemoteFunc(genericDataType, "issues_unpinned", "IssuesService", "onIssuesUnpinned");
+                check self.executeRemoteFunc(genericDataType, "issues_unpinned", "IssuesService", "onUnpinned");
             }
             "issues_assigned" => {
-                check self.executeRemoteFunc(genericDataType, "issues_assigned", "IssuesService", "onIssuesAssigned");
+                check self.executeRemoteFunc(genericDataType, "issues_assigned", "IssuesService", "onAssigned");
             }
             "issues_milestoned" => {
-                check self.executeRemoteFunc(genericDataType, "issues_milestoned", "IssuesService", "onIssuesMilestoned");
+                check self.executeRemoteFunc(genericDataType, "issues_milestoned", "IssuesService", "onMilestoned");
             }
             "issues_labeled" => {
-                check self.executeRemoteFunc(genericDataType, "issues_labeled", "IssuesService", "onIssuesLabeled");
+                check self.executeRemoteFunc(genericDataType, "issues_labeled", "IssuesService", "onLabeled");
             }
             "issues_opened" => {
-                check self.executeRemoteFunc(genericDataType, "issues_opened", "IssuesService", "onIssuesOpened");
+                check self.executeRemoteFunc(genericDataType, "issues_opened", "IssuesService", "onOpened");
             }
             "issues_pinned" => {
-                check self.executeRemoteFunc(genericDataType, "issues_pinned", "IssuesService", "onIssuesPinned");
+                check self.executeRemoteFunc(genericDataType, "issues_pinned", "IssuesService", "onPinned");
             }
             "issues_typed" => {
-                check self.executeRemoteFunc(genericDataType, "issues_typed", "IssuesService", "onIssuesTyped");
+                check self.executeRemoteFunc(genericDataType, "issues_typed", "IssuesService", "onTyped");
             }
             "issues_edited" => {
-                check self.executeRemoteFunc(genericDataType, "issues_edited", "IssuesService", "onIssuesEdited");
+                check self.executeRemoteFunc(genericDataType, "issues_edited", "IssuesService", "onEdited");
             }
             "issues_untyped" => {
-                check self.executeRemoteFunc(genericDataType, "issues_untyped", "IssuesService", "onIssuesUntyped");
+                check self.executeRemoteFunc(genericDataType, "issues_untyped", "IssuesService", "onUntyped");
             }
             "issues_demilestoned" => {
-                check self.executeRemoteFunc(genericDataType, "issues_demilestoned", "IssuesService", "onIssuesDemilestoned");
+                check self.executeRemoteFunc(genericDataType, "issues_demilestoned", "IssuesService", "onDemilestoned");
             }
             "issues_locked" => {
-                check self.executeRemoteFunc(genericDataType, "issues_locked", "IssuesService", "onIssuesLocked");
+                check self.executeRemoteFunc(genericDataType, "issues_locked", "IssuesService", "onLocked");
             }
             "issues_unassigned" => {
-                check self.executeRemoteFunc(genericDataType, "issues_unassigned", "IssuesService", "onIssuesUnassigned");
+                check self.executeRemoteFunc(genericDataType, "issues_unassigned", "IssuesService", "onUnassigned");
             }
             "issues_unlocked" => {
-                check self.executeRemoteFunc(genericDataType, "issues_unlocked", "IssuesService", "onIssuesUnlocked");
+                check self.executeRemoteFunc(genericDataType, "issues_unlocked", "IssuesService", "onUnlocked");
             }
             "issues_unlabeled" => {
-                check self.executeRemoteFunc(genericDataType, "issues_unlabeled", "IssuesService", "onIssuesUnlabeled");
+                check self.executeRemoteFunc(genericDataType, "issues_unlabeled", "IssuesService", "onUnlabeled");
             }
             "issues_closed" => {
-                check self.executeRemoteFunc(genericDataType, "issues_closed", "IssuesService", "onIssuesClosed");
+                check self.executeRemoteFunc(genericDataType, "issues_closed", "IssuesService", "onClosed");
             }
             "issues_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "issues_deleted", "IssuesService", "onIssuesDeleted");
+                check self.executeRemoteFunc(genericDataType, "issues_deleted", "IssuesService", "onDeleted");
             }
         }
     }
@@ -907,10 +907,10 @@ service class DispatcherService {
     private function matchRemoteFuncForRegistryPackage(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "registry_package_updated" => {
-                check self.executeRemoteFunc(genericDataType, "registry_package_updated", "RegistryPackageService", "onRegistryPackageUpdated");
+                check self.executeRemoteFunc(genericDataType, "registry_package_updated", "RegistryPackageService", "onUpdated");
             }
             "registry_package_published" => {
-                check self.executeRemoteFunc(genericDataType, "registry_package_published", "RegistryPackageService", "onRegistryPackagePublished");
+                check self.executeRemoteFunc(genericDataType, "registry_package_published", "RegistryPackageService", "onPublished");
             }
         }
     }
@@ -918,19 +918,19 @@ service class DispatcherService {
     private function matchRemoteFuncForProjectsV2(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "projects_v2_created" => {
-                check self.executeRemoteFunc(genericDataType, "projects_v2_created", "ProjectsV2Service", "onProjectsV2Created");
+                check self.executeRemoteFunc(genericDataType, "projects_v2_created", "ProjectsV2Service", "onCreated");
             }
             "projects_v2_edited" => {
-                check self.executeRemoteFunc(genericDataType, "projects_v2_edited", "ProjectsV2Service", "onProjectsV2Edited");
+                check self.executeRemoteFunc(genericDataType, "projects_v2_edited", "ProjectsV2Service", "onEdited");
             }
             "projects_v2_closed" => {
-                check self.executeRemoteFunc(genericDataType, "projects_v2_closed", "ProjectsV2Service", "onProjectsV2Closed");
+                check self.executeRemoteFunc(genericDataType, "projects_v2_closed", "ProjectsV2Service", "onClosed");
             }
             "projects_v2_reopened" => {
-                check self.executeRemoteFunc(genericDataType, "projects_v2_reopened", "ProjectsV2Service", "onProjectsV2Reopened");
+                check self.executeRemoteFunc(genericDataType, "projects_v2_reopened", "ProjectsV2Service", "onReopened");
             }
             "projects_v2_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "projects_v2_deleted", "ProjectsV2Service", "onProjectsV2Deleted");
+                check self.executeRemoteFunc(genericDataType, "projects_v2_deleted", "ProjectsV2Service", "onDeleted");
             }
         }
     }
@@ -938,16 +938,16 @@ service class DispatcherService {
     private function matchRemoteFuncForRepositoryVulnerabilityAlert(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "repository_vulnerability_alert_resolve" => {
-                check self.executeRemoteFunc(genericDataType, "repository_vulnerability_alert_resolve", "RepositoryVulnerabilityAlertService", "onRepositoryVulnerabilityAlertResolve");
+                check self.executeRemoteFunc(genericDataType, "repository_vulnerability_alert_resolve", "RepositoryVulnerabilityAlertService", "onResolve");
             }
             "repository_vulnerability_alert_reopen" => {
-                check self.executeRemoteFunc(genericDataType, "repository_vulnerability_alert_reopen", "RepositoryVulnerabilityAlertService", "onRepositoryVulnerabilityAlertReopen");
+                check self.executeRemoteFunc(genericDataType, "repository_vulnerability_alert_reopen", "RepositoryVulnerabilityAlertService", "onReopen");
             }
             "repository_vulnerability_alert_dismiss" => {
-                check self.executeRemoteFunc(genericDataType, "repository_vulnerability_alert_dismiss", "RepositoryVulnerabilityAlertService", "onRepositoryVulnerabilityAlertDismiss");
+                check self.executeRemoteFunc(genericDataType, "repository_vulnerability_alert_dismiss", "RepositoryVulnerabilityAlertService", "onDismiss");
             }
             "repository_vulnerability_alert_create" => {
-                check self.executeRemoteFunc(genericDataType, "repository_vulnerability_alert_create", "RepositoryVulnerabilityAlertService", "onRepositoryVulnerabilityAlertCreate");
+                check self.executeRemoteFunc(genericDataType, "repository_vulnerability_alert_create", "RepositoryVulnerabilityAlertService", "onCreate");
             }
         }
     }
@@ -955,10 +955,10 @@ service class DispatcherService {
     private function matchRemoteFuncForStar(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "star_created" => {
-                check self.executeRemoteFunc(genericDataType, "star_created", "StarService", "onStarCreated");
+                check self.executeRemoteFunc(genericDataType, "star_created", "StarService", "onCreated");
             }
             "star_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "star_deleted", "StarService", "onStarDeleted");
+                check self.executeRemoteFunc(genericDataType, "star_deleted", "StarService", "onDeleted");
             }
         }
     }
@@ -974,13 +974,13 @@ service class DispatcherService {
     private function matchRemoteFuncForDeploymentReview(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "deployment_review_requested" => {
-                check self.executeRemoteFunc(genericDataType, "deployment_review_requested", "DeploymentReviewService", "onDeploymentReviewRequested");
+                check self.executeRemoteFunc(genericDataType, "deployment_review_requested", "DeploymentReviewService", "onRequested");
             }
             "deployment_review_rejected" => {
-                check self.executeRemoteFunc(genericDataType, "deployment_review_rejected", "DeploymentReviewService", "onDeploymentReviewRejected");
+                check self.executeRemoteFunc(genericDataType, "deployment_review_rejected", "DeploymentReviewService", "onRejected");
             }
             "deployment_review_approved" => {
-                check self.executeRemoteFunc(genericDataType, "deployment_review_approved", "DeploymentReviewService", "onDeploymentReviewApproved");
+                check self.executeRemoteFunc(genericDataType, "deployment_review_approved", "DeploymentReviewService", "onApproved");
             }
         }
     }
@@ -1012,19 +1012,19 @@ service class DispatcherService {
     private function matchRemoteFuncForTeam(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "team_created" => {
-                check self.executeRemoteFunc(genericDataType, "team_created", "TeamService", "onTeamCreated");
+                check self.executeRemoteFunc(genericDataType, "team_created", "TeamService", "onCreated");
             }
             "team_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "team_deleted", "TeamService", "onTeamDeleted");
+                check self.executeRemoteFunc(genericDataType, "team_deleted", "TeamService", "onDeleted");
             }
             "team_edited" => {
-                check self.executeRemoteFunc(genericDataType, "team_edited", "TeamService", "onTeamEdited");
+                check self.executeRemoteFunc(genericDataType, "team_edited", "TeamService", "onEdited");
             }
             "team_added_to_repository" => {
-                check self.executeRemoteFunc(genericDataType, "team_added_to_repository", "TeamService", "onTeamAddedToRepository");
+                check self.executeRemoteFunc(genericDataType, "team_added_to_repository", "TeamService", "onAddedToRepository");
             }
             "team_removed_from_repository" => {
-                check self.executeRemoteFunc(genericDataType, "team_removed_from_repository", "TeamService", "onTeamRemovedFromRepository");
+                check self.executeRemoteFunc(genericDataType, "team_removed_from_repository", "TeamService", "onRemovedFromRepository");
             }
         }
     }
@@ -1032,16 +1032,16 @@ service class DispatcherService {
     private function matchRemoteFuncForWorkflowJob(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "workflow_job_queued" => {
-                check self.executeRemoteFunc(genericDataType, "workflow_job_queued", "WorkflowJobService", "onWorkflowJobQueued");
+                check self.executeRemoteFunc(genericDataType, "workflow_job_queued", "WorkflowJobService", "onQueued");
             }
             "workflow_job_waiting" => {
-                check self.executeRemoteFunc(genericDataType, "workflow_job_waiting", "WorkflowJobService", "onWorkflowJobWaiting");
+                check self.executeRemoteFunc(genericDataType, "workflow_job_waiting", "WorkflowJobService", "onWaiting");
             }
             "workflow_job_completed" => {
-                check self.executeRemoteFunc(genericDataType, "workflow_job_completed", "WorkflowJobService", "onWorkflowJobCompleted");
+                check self.executeRemoteFunc(genericDataType, "workflow_job_completed", "WorkflowJobService", "onCompleted");
             }
             "workflow_job_in_progress" => {
-                check self.executeRemoteFunc(genericDataType, "workflow_job_in_progress", "WorkflowJobService", "onWorkflowJobInProgress");
+                check self.executeRemoteFunc(genericDataType, "workflow_job_in_progress", "WorkflowJobService", "onInProgress");
             }
         }
     }
@@ -1049,25 +1049,25 @@ service class DispatcherService {
     private function matchRemoteFuncForRelease(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "release_created" => {
-                check self.executeRemoteFunc(genericDataType, "release_created", "ReleaseService", "onReleaseCreated");
+                check self.executeRemoteFunc(genericDataType, "release_created", "ReleaseService", "onCreated");
             }
             "release_published" => {
-                check self.executeRemoteFunc(genericDataType, "release_published", "ReleaseService", "onReleasePublished");
+                check self.executeRemoteFunc(genericDataType, "release_published", "ReleaseService", "onPublished");
             }
             "release_released" => {
-                check self.executeRemoteFunc(genericDataType, "release_released", "ReleaseService", "onReleaseReleased");
+                check self.executeRemoteFunc(genericDataType, "release_released", "ReleaseService", "onReleased");
             }
             "release_prereleased" => {
-                check self.executeRemoteFunc(genericDataType, "release_prereleased", "ReleaseService", "onReleasePrereleased");
+                check self.executeRemoteFunc(genericDataType, "release_prereleased", "ReleaseService", "onPrereleased");
             }
             "release_unpublished" => {
-                check self.executeRemoteFunc(genericDataType, "release_unpublished", "ReleaseService", "onReleaseUnpublished");
+                check self.executeRemoteFunc(genericDataType, "release_unpublished", "ReleaseService", "onUnpublished");
             }
             "release_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "release_deleted", "ReleaseService", "onReleaseDeleted");
+                check self.executeRemoteFunc(genericDataType, "release_deleted", "ReleaseService", "onDeleted");
             }
             "release_edited" => {
-                check self.executeRemoteFunc(genericDataType, "release_edited", "ReleaseService", "onReleaseEdited");
+                check self.executeRemoteFunc(genericDataType, "release_edited", "ReleaseService", "onEdited");
             }
         }
     }
@@ -1075,19 +1075,19 @@ service class DispatcherService {
     private function matchRemoteFuncForInstallation(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "installation_new_permissions_accepted" => {
-                check self.executeRemoteFunc(genericDataType, "installation_new_permissions_accepted", "InstallationService", "onInstallationNewPermissionsAccepted");
+                check self.executeRemoteFunc(genericDataType, "installation_new_permissions_accepted", "InstallationService", "onNewPermissionsAccepted");
             }
             "installation_suspend" => {
-                check self.executeRemoteFunc(genericDataType, "installation_suspend", "InstallationService", "onInstallationSuspend");
+                check self.executeRemoteFunc(genericDataType, "installation_suspend", "InstallationService", "onSuspend");
             }
             "installation_created" => {
-                check self.executeRemoteFunc(genericDataType, "installation_created", "InstallationService", "onInstallationCreated");
+                check self.executeRemoteFunc(genericDataType, "installation_created", "InstallationService", "onCreated");
             }
             "installation_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "installation_deleted", "InstallationService", "onInstallationDeleted");
+                check self.executeRemoteFunc(genericDataType, "installation_deleted", "InstallationService", "onDeleted");
             }
             "installation_unsuspend" => {
-                check self.executeRemoteFunc(genericDataType, "installation_unsuspend", "InstallationService", "onInstallationUnsuspend");
+                check self.executeRemoteFunc(genericDataType, "installation_unsuspend", "InstallationService", "onUnsuspend");
             }
         }
     }
@@ -1103,13 +1103,13 @@ service class DispatcherService {
     private function matchRemoteFuncForDiscussionComment(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "discussion_comment_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "discussion_comment_deleted", "DiscussionCommentService", "onDiscussionCommentDeleted");
+                check self.executeRemoteFunc(genericDataType, "discussion_comment_deleted", "DiscussionCommentService", "onDeleted");
             }
             "discussion_comment_created" => {
-                check self.executeRemoteFunc(genericDataType, "discussion_comment_created", "DiscussionCommentService", "onDiscussionCommentCreated");
+                check self.executeRemoteFunc(genericDataType, "discussion_comment_created", "DiscussionCommentService", "onCreated");
             }
             "discussion_comment_edited" => {
-                check self.executeRemoteFunc(genericDataType, "discussion_comment_edited", "DiscussionCommentService", "onDiscussionCommentEdited");
+                check self.executeRemoteFunc(genericDataType, "discussion_comment_edited", "DiscussionCommentService", "onEdited");
             }
         }
     }
@@ -1117,13 +1117,13 @@ service class DispatcherService {
     private function matchRemoteFuncForBranchProtectionRule(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "branch_protection_rule_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "branch_protection_rule_deleted", "BranchProtectionRuleService", "onBranchProtectionRuleDeleted");
+                check self.executeRemoteFunc(genericDataType, "branch_protection_rule_deleted", "BranchProtectionRuleService", "onDeleted");
             }
             "branch_protection_rule_edited" => {
-                check self.executeRemoteFunc(genericDataType, "branch_protection_rule_edited", "BranchProtectionRuleService", "onBranchProtectionRuleEdited");
+                check self.executeRemoteFunc(genericDataType, "branch_protection_rule_edited", "BranchProtectionRuleService", "onEdited");
             }
             "branch_protection_rule_created" => {
-                check self.executeRemoteFunc(genericDataType, "branch_protection_rule_created", "BranchProtectionRuleService", "onBranchProtectionRuleCreated");
+                check self.executeRemoteFunc(genericDataType, "branch_protection_rule_created", "BranchProtectionRuleService", "onCreated");
             }
         }
     }
@@ -1131,10 +1131,10 @@ service class DispatcherService {
     private function matchRemoteFuncForIssueDependencies(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "issue_dependencies_issue_dependency_added" => {
-                check self.executeRemoteFunc(genericDataType, "issue_dependencies_issue_dependency_added", "IssueDependenciesService", "onIssueDependenciesIssueDependencyAdded");
+                check self.executeRemoteFunc(genericDataType, "issue_dependencies_issue_dependency_added", "IssueDependenciesService", "onIssueDependencyAdded");
             }
             "issue_dependencies_issue_dependency_removed" => {
-                check self.executeRemoteFunc(genericDataType, "issue_dependencies_issue_dependency_removed", "IssueDependenciesService", "onIssueDependenciesIssueDependencyRemoved");
+                check self.executeRemoteFunc(genericDataType, "issue_dependencies_issue_dependency_removed", "IssueDependenciesService", "onIssueDependencyRemoved");
             }
         }
     }
@@ -1142,31 +1142,31 @@ service class DispatcherService {
     private function matchRemoteFuncForRepository(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "repository_privatized" => {
-                check self.executeRemoteFunc(genericDataType, "repository_privatized", "RepositoryService", "onRepositoryPrivatized");
+                check self.executeRemoteFunc(genericDataType, "repository_privatized", "RepositoryService", "onPrivatized");
             }
             "repository_created" => {
-                check self.executeRemoteFunc(genericDataType, "repository_created", "RepositoryService", "onRepositoryCreated");
+                check self.executeRemoteFunc(genericDataType, "repository_created", "RepositoryService", "onCreated");
             }
             "repository_renamed" => {
-                check self.executeRemoteFunc(genericDataType, "repository_renamed", "RepositoryService", "onRepositoryRenamed");
+                check self.executeRemoteFunc(genericDataType, "repository_renamed", "RepositoryService", "onRenamed");
             }
             "repository_transferred" => {
-                check self.executeRemoteFunc(genericDataType, "repository_transferred", "RepositoryService", "onRepositoryTransferred");
+                check self.executeRemoteFunc(genericDataType, "repository_transferred", "RepositoryService", "onTransferred");
             }
             "repository_edited" => {
-                check self.executeRemoteFunc(genericDataType, "repository_edited", "RepositoryService", "onRepositoryEdited");
+                check self.executeRemoteFunc(genericDataType, "repository_edited", "RepositoryService", "onEdited");
             }
             "repository_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "repository_deleted", "RepositoryService", "onRepositoryDeleted");
+                check self.executeRemoteFunc(genericDataType, "repository_deleted", "RepositoryService", "onDeleted");
             }
             "repository_archived" => {
-                check self.executeRemoteFunc(genericDataType, "repository_archived", "RepositoryService", "onRepositoryArchived");
+                check self.executeRemoteFunc(genericDataType, "repository_archived", "RepositoryService", "onArchived");
             }
             "repository_publicized" => {
-                check self.executeRemoteFunc(genericDataType, "repository_publicized", "RepositoryService", "onRepositoryPublicized");
+                check self.executeRemoteFunc(genericDataType, "repository_publicized", "RepositoryService", "onPublicized");
             }
             "repository_unarchived" => {
-                check self.executeRemoteFunc(genericDataType, "repository_unarchived", "RepositoryService", "onRepositoryUnarchived");
+                check self.executeRemoteFunc(genericDataType, "repository_unarchived", "RepositoryService", "onUnarchived");
             }
         }
     }
@@ -1174,13 +1174,13 @@ service class DispatcherService {
     private function matchRemoteFuncForPullRequestReviewComment(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "pull_request_review_comment_created" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_review_comment_created", "PullRequestReviewCommentService", "onPullRequestReviewCommentCreated");
+                check self.executeRemoteFunc(genericDataType, "pull_request_review_comment_created", "PullRequestReviewCommentService", "onCreated");
             }
             "pull_request_review_comment_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_review_comment_deleted", "PullRequestReviewCommentService", "onPullRequestReviewCommentDeleted");
+                check self.executeRemoteFunc(genericDataType, "pull_request_review_comment_deleted", "PullRequestReviewCommentService", "onDeleted");
             }
             "pull_request_review_comment_edited" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_review_comment_edited", "PullRequestReviewCommentService", "onPullRequestReviewCommentEdited");
+                check self.executeRemoteFunc(genericDataType, "pull_request_review_comment_edited", "PullRequestReviewCommentService", "onEdited");
             }
         }
     }
@@ -1204,10 +1204,10 @@ service class DispatcherService {
     private function matchRemoteFuncForInstallationRepositories(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "installation_repositories_removed" => {
-                check self.executeRemoteFunc(genericDataType, "installation_repositories_removed", "InstallationRepositoriesService", "onInstallationRepositoriesRemoved");
+                check self.executeRemoteFunc(genericDataType, "installation_repositories_removed", "InstallationRepositoriesService", "onRemoved");
             }
             "installation_repositories_added" => {
-                check self.executeRemoteFunc(genericDataType, "installation_repositories_added", "InstallationRepositoriesService", "onInstallationRepositoriesAdded");
+                check self.executeRemoteFunc(genericDataType, "installation_repositories_added", "InstallationRepositoriesService", "onAdded");
             }
         }
     }
@@ -1243,16 +1243,16 @@ service class DispatcherService {
     private function matchRemoteFuncForCheckRun(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "check_run_created" => {
-                check self.executeRemoteFunc(genericDataType, "check_run_created", "CheckRunService", "onCheckRunCreated");
+                check self.executeRemoteFunc(genericDataType, "check_run_created", "CheckRunService", "onCreated");
             }
             "check_run_completed" => {
-                check self.executeRemoteFunc(genericDataType, "check_run_completed", "CheckRunService", "onCheckRunCompleted");
+                check self.executeRemoteFunc(genericDataType, "check_run_completed", "CheckRunService", "onCompleted");
             }
             "check_run_requested_action" => {
-                check self.executeRemoteFunc(genericDataType, "check_run_requested_action", "CheckRunService", "onCheckRunRequestedAction");
+                check self.executeRemoteFunc(genericDataType, "check_run_requested_action", "CheckRunService", "onRequestedAction");
             }
             "check_run_rerequested" => {
-                check self.executeRemoteFunc(genericDataType, "check_run_rerequested", "CheckRunService", "onCheckRunRerequested");
+                check self.executeRemoteFunc(genericDataType, "check_run_rerequested", "CheckRunService", "onRerequested");
             }
         }
     }
@@ -1268,16 +1268,16 @@ service class DispatcherService {
     private function matchRemoteFuncForCustomProperty(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "custom_property_updated" => {
-                check self.executeRemoteFunc(genericDataType, "custom_property_updated", "CustomPropertyService", "onCustomPropertyUpdated");
+                check self.executeRemoteFunc(genericDataType, "custom_property_updated", "CustomPropertyService", "onUpdated");
             }
             "custom_property_deleted" => {
-                check self.executeRemoteFunc(genericDataType, "custom_property_deleted", "CustomPropertyService", "onCustomPropertyDeleted");
+                check self.executeRemoteFunc(genericDataType, "custom_property_deleted", "CustomPropertyService", "onDeleted");
             }
             "custom_property_promote_to_enterprise" => {
-                check self.executeRemoteFunc(genericDataType, "custom_property_promote_to_enterprise", "CustomPropertyService", "onCustomPropertyPromoteToEnterprise");
+                check self.executeRemoteFunc(genericDataType, "custom_property_promote_to_enterprise", "CustomPropertyService", "onPromoteToEnterprise");
             }
             "custom_property_created" => {
-                check self.executeRemoteFunc(genericDataType, "custom_property_created", "CustomPropertyService", "onCustomPropertyCreated");
+                check self.executeRemoteFunc(genericDataType, "custom_property_created", "CustomPropertyService", "onCreated");
             }
         }
     }
@@ -1285,28 +1285,28 @@ service class DispatcherService {
     private function matchRemoteFuncForDependabotAlert(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "dependabot_alert_auto_dismissed" => {
-                check self.executeRemoteFunc(genericDataType, "dependabot_alert_auto_dismissed", "DependabotAlertService", "onDependabotAlertAutoDismissed");
+                check self.executeRemoteFunc(genericDataType, "dependabot_alert_auto_dismissed", "DependabotAlertService", "onAutoDismissed");
             }
             "dependabot_alert_auto_reopened" => {
-                check self.executeRemoteFunc(genericDataType, "dependabot_alert_auto_reopened", "DependabotAlertService", "onDependabotAlertAutoReopened");
+                check self.executeRemoteFunc(genericDataType, "dependabot_alert_auto_reopened", "DependabotAlertService", "onAutoReopened");
             }
             "dependabot_alert_created" => {
-                check self.executeRemoteFunc(genericDataType, "dependabot_alert_created", "DependabotAlertService", "onDependabotAlertCreated");
+                check self.executeRemoteFunc(genericDataType, "dependabot_alert_created", "DependabotAlertService", "onCreated");
             }
             "dependabot_alert_dismissed" => {
-                check self.executeRemoteFunc(genericDataType, "dependabot_alert_dismissed", "DependabotAlertService", "onDependabotAlertDismissed");
+                check self.executeRemoteFunc(genericDataType, "dependabot_alert_dismissed", "DependabotAlertService", "onDismissed");
             }
             "dependabot_alert_reopened" => {
-                check self.executeRemoteFunc(genericDataType, "dependabot_alert_reopened", "DependabotAlertService", "onDependabotAlertReopened");
+                check self.executeRemoteFunc(genericDataType, "dependabot_alert_reopened", "DependabotAlertService", "onReopened");
             }
             "dependabot_alert_reintroduced" => {
-                check self.executeRemoteFunc(genericDataType, "dependabot_alert_reintroduced", "DependabotAlertService", "onDependabotAlertReintroduced");
+                check self.executeRemoteFunc(genericDataType, "dependabot_alert_reintroduced", "DependabotAlertService", "onReintroduced");
             }
             "dependabot_alert_assignees_changed" => {
-                check self.executeRemoteFunc(genericDataType, "dependabot_alert_assignees_changed", "DependabotAlertService", "onDependabotAlertAssigneesChanged");
+                check self.executeRemoteFunc(genericDataType, "dependabot_alert_assignees_changed", "DependabotAlertService", "onAssigneesChanged");
             }
             "dependabot_alert_fixed" => {
-                check self.executeRemoteFunc(genericDataType, "dependabot_alert_fixed", "DependabotAlertService", "onDependabotAlertFixed");
+                check self.executeRemoteFunc(genericDataType, "dependabot_alert_fixed", "DependabotAlertService", "onFixed");
             }
         }
     }
@@ -1322,10 +1322,10 @@ service class DispatcherService {
     private function matchRemoteFuncForRepositoryAdvisory(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "repository_advisory_reported" => {
-                check self.executeRemoteFunc(genericDataType, "repository_advisory_reported", "RepositoryAdvisoryService", "onRepositoryAdvisoryReported");
+                check self.executeRemoteFunc(genericDataType, "repository_advisory_reported", "RepositoryAdvisoryService", "onReported");
             }
             "repository_advisory_published" => {
-                check self.executeRemoteFunc(genericDataType, "repository_advisory_published", "RepositoryAdvisoryService", "onRepositoryAdvisoryPublished");
+                check self.executeRemoteFunc(genericDataType, "repository_advisory_published", "RepositoryAdvisoryService", "onPublished");
             }
         }
     }
@@ -1333,10 +1333,10 @@ service class DispatcherService {
     private function matchRemoteFuncForPullRequestReviewThread(GenericDataType genericDataType, string eventIdentifier) returns error? {
         match eventIdentifier {
             "pull_request_review_thread_unresolved" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_review_thread_unresolved", "PullRequestReviewThreadService", "onPullRequestReviewThreadUnresolved");
+                check self.executeRemoteFunc(genericDataType, "pull_request_review_thread_unresolved", "PullRequestReviewThreadService", "onUnresolved");
             }
             "pull_request_review_thread_resolved" => {
-                check self.executeRemoteFunc(genericDataType, "pull_request_review_thread_resolved", "PullRequestReviewThreadService", "onPullRequestReviewThreadResolved");
+                check self.executeRemoteFunc(genericDataType, "pull_request_review_thread_resolved", "PullRequestReviewThreadService", "onResolved");
             }
         }
     }

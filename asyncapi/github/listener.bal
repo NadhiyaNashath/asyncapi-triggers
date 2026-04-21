@@ -22,18 +22,14 @@ public class Listener {
     private http:Listener httpListener;
     private DispatcherService dispatcherService;
 
-    public function init(@cloud:Expose int|http:Listener listenTo = 8090,
-            *ListenerConfiguration configuration) returns error? {
-        if listenTo is http:Listener {
-            self.httpListener = listenTo;
+    public function init(ListenerConfig listenerConfig = {webhookSecret: DEFAULT_SECRET},
+            @cloud:Expose int|http:Listener listenOn = 8090) returns error? {
+        if listenOn is http:Listener {
+            self.httpListener = listenOn;
         } else {
-            json configJson = configuration.toJson();
-            map<json> configMap = check configJson.cloneWithType();
-            _ = configMap.remove("webhookSecret");
-            http:ListenerConfiguration httpConfig = check configMap.cloneWithType();
-            self.httpListener = check new (listenTo, httpConfig);
+            self.httpListener = check new (listenOn);
         }
-        self.dispatcherService = new DispatcherService(configuration.webhookSecret);
+        self.dispatcherService = new DispatcherService(listenerConfig.webhookSecret);
     }
 
     public isolated function attach(GenericServiceType serviceRef, () attachPoint) returns @tainted error? {
@@ -213,3 +209,12 @@ public class Listener {
         }
     }
 }
+
+const string DEFAULT_SECRET = "";
+
+// Listener related configurations should be included here
+@display {label: "Listener Config"}
+public type ListenerConfig record {
+    @display {label: "Webhook Secret", "description": "Secret specified when adding the github webhook"}
+    string webhookSecret = DEFAULT_SECRET;
+};
