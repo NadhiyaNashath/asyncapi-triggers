@@ -61,6 +61,85 @@ boolean issueCommentDeletedNotified = false;
 boolean issueCommentPinnedNotified = false;
 boolean issueCommentUnpinnedNotified = false;
 
+boolean prOpenedNotified = false;
+string prTitle = "";
+boolean prClosedNotified = false;
+boolean prReopenedNotified = false;
+boolean prEditedNotified = false;
+record {}? prChanges = ();
+boolean prLabeledNotified = false;
+boolean prUnlabeledNotified = false;
+boolean prAssignedNotified = false;
+boolean prUnassignedNotified = false;
+boolean prSynchronizeNotified = false;
+boolean prReadyForReviewNotified = false;
+boolean prConvertedToDraftNotified = false;
+boolean prReviewRequestedNotified = false;
+boolean prLockedNotified = false;
+boolean prUnlockedNotified = false;
+
+boolean pushNotified = false;
+string pushRef = "";
+
+boolean prReviewSubmittedNotified = false;
+string prReviewState = "";
+boolean prReviewEditedNotified = false;
+record {}? prReviewChanges = ();
+boolean prReviewDismissedNotified = false;
+
+boolean releaseCreatedNotified = false;
+string releaseTagName = "";
+boolean releasePublishedNotified = false;
+boolean releaseReleasedNotified = false;
+boolean releasePrereleasedNotified = false;
+boolean releaseUnpublishedNotified = false;
+boolean releaseDeletedNotified = false;
+boolean releaseEditedNotified = false;
+record {}? releaseChanges = ();
+
+boolean workflowRunRequestedNotified = false;
+string workflowRunName = "";
+boolean workflowRunInProgressNotified = false;
+boolean workflowRunCompletedNotified = false;
+string workflowRunConclusion = "";
+
+boolean labelCreatedNotified = false;
+string labelCreatedName = "";
+boolean labelEditedNotified = false;
+record {}? labelChanges = ();
+boolean labelDeletedNotified = false;
+
+boolean milestoneCreatedNotified = false;
+string milestoneTitle = "";
+boolean milestoneEditedNotified = false;
+record {}? milestoneChanges = ();
+boolean milestoneOpenedNotified = false;
+boolean milestoneClosedNotified = false;
+boolean milestoneDeletedNotified = false;
+
+boolean prReviewCommentCreatedNotified = false;
+string prReviewCommentBody = "";
+boolean prReviewCommentEditedNotified = false;
+record {}? prReviewCommentChanges = ();
+boolean prReviewCommentDeletedNotified = false;
+
+boolean dependabotAlertCreatedNotified = false;
+string dependabotAlertPackageName = "";
+boolean dependabotAlertDismissedNotified = false;
+boolean dependabotAlertAutoDismissedNotified = false;
+boolean dependabotAlertFixedNotified = false;
+boolean dependabotAlertReopenedNotified = false;
+boolean dependabotAlertAutoReopenedNotified = false;
+boolean dependabotAlertReintroducedNotified = false;
+boolean dependabotAlertAssigneesChangedNotified = false;
+
+boolean checkRunCreatedNotified = false;
+string checkRunName = "";
+boolean checkRunCompletedNotified = false;
+string checkRunConclusion = "";
+boolean checkRunRerequestedNotified = false;
+boolean checkRunRequestedActionNotified = false;
+
 configurable string githubSecret = "q234";
 
 listener Listener githubListener = new ({webhookSecret: githubSecret});
@@ -191,6 +270,317 @@ service IssueCommentService on githubListener {
     remote function onUnpinned(IssueCommentEvent payload) returns error? {
         log:printInfo("Issue comment unpinned");
         issueCommentUnpinnedNotified = true;
+    }
+}
+
+service PullRequestService on githubListener {
+
+    remote function onOpened(PullRequestEvent payload) returns error? {
+        log:printInfo("PR opened");
+        prOpenedNotified = true;
+        prTitle = payload.pull_request.title;
+    }
+
+    remote function onClosed(PullRequestEvent payload) returns error? {
+        log:printInfo("PR closed");
+        prClosedNotified = true;
+    }
+
+    remote function onReopened(PullRequestEvent payload) returns error? {
+        log:printInfo("PR reopened");
+        prReopenedNotified = true;
+    }
+
+    remote function onEdited(PullRequestEvent payload) returns error? {
+        log:printInfo("PR edited");
+        prEditedNotified = true;
+        prChanges = payload.changes;
+    }
+
+    remote function onLabeled(PullRequestEvent payload) returns error? {
+        log:printInfo("PR labeled");
+        prLabeledNotified = true;
+    }
+
+    remote function onUnlabeled(PullRequestEvent payload) returns error? {
+        log:printInfo("PR unlabeled");
+        prUnlabeledNotified = true;
+    }
+
+    remote function onAssigned(PullRequestEvent payload) returns error? {
+        log:printInfo("PR assigned");
+        prAssignedNotified = true;
+    }
+
+    remote function onUnassigned(PullRequestEvent payload) returns error? {
+        log:printInfo("PR unassigned");
+        prUnassignedNotified = true;
+    }
+
+    remote function onSynchronize(PullRequestEvent payload) returns error? {
+        log:printInfo("PR synchronize");
+        prSynchronizeNotified = true;
+    }
+
+    remote function onReadyForReview(PullRequestEvent payload) returns error? {
+        log:printInfo("PR ready for review");
+        prReadyForReviewNotified = true;
+    }
+
+    remote function onConvertedToDraft(PullRequestEvent payload) returns error? {
+        log:printInfo("PR converted to draft");
+        prConvertedToDraftNotified = true;
+    }
+
+    remote function onReviewRequested(PullRequestEvent payload) returns error? {
+        log:printInfo("PR review requested");
+        prReviewRequestedNotified = true;
+    }
+
+    remote function onLocked(PullRequestEvent payload) returns error? {
+        log:printInfo("PR locked");
+        prLockedNotified = true;
+    }
+
+    remote function onUnlocked(PullRequestEvent payload) returns error? {
+        log:printInfo("PR unlocked");
+        prUnlockedNotified = true;
+    }
+
+    remote function onEnqueued(PullRequestEvent payload) returns error? {}
+    remote function onDequeued(PullRequestEvent payload) returns error? {}
+    remote function onReviewRequestRemoved(PullRequestEvent payload) returns error? {}
+    remote function onAutoMergeEnabled(PullRequestEvent payload) returns error? {}
+    remote function onAutoMergeDisabled(PullRequestEvent payload) returns error? {}
+    remote function onMilestoned(PullRequestEvent payload) returns error? {}
+    remote function onDemilestoned(PullRequestEvent payload) returns error? {}
+}
+
+service DependabotAlertService on githubListener {
+
+    remote function onCreated(DependabotAlertEvent payload) returns error? {
+        log:printInfo("Dependabot alert created");
+        dependabotAlertCreatedNotified = true;
+        dependabotAlertPackageName = payload.alert.dependency?.package?.name ?: "";
+    }
+
+    remote function onDismissed(DependabotAlertEvent payload) returns error? {
+        log:printInfo("Dependabot alert dismissed");
+        dependabotAlertDismissedNotified = true;
+    }
+
+    remote function onAutoDismissed(DependabotAlertEvent payload) returns error? {
+        log:printInfo("Dependabot alert auto-dismissed");
+        dependabotAlertAutoDismissedNotified = true;
+    }
+
+    remote function onFixed(DependabotAlertEvent payload) returns error? {
+        log:printInfo("Dependabot alert fixed");
+        dependabotAlertFixedNotified = true;
+    }
+
+    remote function onReopened(DependabotAlertEvent payload) returns error? {
+        log:printInfo("Dependabot alert reopened");
+        dependabotAlertReopenedNotified = true;
+    }
+
+    remote function onAutoReopened(DependabotAlertEvent payload) returns error? {
+        log:printInfo("Dependabot alert auto-reopened");
+        dependabotAlertAutoReopenedNotified = true;
+    }
+
+    remote function onReintroduced(DependabotAlertEvent payload) returns error? {
+        log:printInfo("Dependabot alert reintroduced");
+        dependabotAlertReintroducedNotified = true;
+    }
+
+    remote function onAssigneesChanged(DependabotAlertEvent payload) returns error? {
+        log:printInfo("Dependabot alert assignees changed");
+        dependabotAlertAssigneesChangedNotified = true;
+    }
+}
+
+service CheckRunService on githubListener {
+
+    remote function onCreated(CheckRunEvent payload) returns error? {
+        log:printInfo("Check run created");
+        checkRunCreatedNotified = true;
+        checkRunName = payload.check_run.name;
+    }
+
+    remote function onCompleted(CheckRunEvent payload) returns error? {
+        log:printInfo("Check run completed");
+        checkRunCompletedNotified = true;
+        checkRunConclusion = payload.check_run.conclusion ?: "";
+    }
+
+    remote function onRerequested(CheckRunEvent payload) returns error? {
+        log:printInfo("Check run rerequested");
+        checkRunRerequestedNotified = true;
+    }
+
+    remote function onRequestedAction(CheckRunEvent payload) returns error? {
+        log:printInfo("Check run requested action");
+        checkRunRequestedActionNotified = true;
+    }
+}
+
+service PullRequestReviewCommentService on githubListener {
+
+    remote function onCreated(PullRequestReviewCommentEvent payload) returns error? {
+        log:printInfo("PR review comment created");
+        prReviewCommentCreatedNotified = true;
+        prReviewCommentBody = payload.comment.body;
+    }
+
+    remote function onEdited(PullRequestReviewCommentEvent payload) returns error? {
+        log:printInfo("PR review comment edited");
+        prReviewCommentEditedNotified = true;
+        prReviewCommentChanges = payload.changes;
+    }
+
+    remote function onDeleted(PullRequestReviewCommentEvent payload) returns error? {
+        log:printInfo("PR review comment deleted");
+        prReviewCommentDeletedNotified = true;
+    }
+}
+
+service MilestoneService on githubListener {
+
+    remote function onCreated(MilestoneEvent payload) returns error? {
+        log:printInfo("Milestone created");
+        milestoneCreatedNotified = true;
+        milestoneTitle = payload.milestone.title ?: "";
+    }
+
+    remote function onEdited(MilestoneEvent payload) returns error? {
+        log:printInfo("Milestone edited");
+        milestoneEditedNotified = true;
+        milestoneChanges = payload.changes;
+    }
+
+    remote function onOpened(MilestoneEvent payload) returns error? {
+        log:printInfo("Milestone opened");
+        milestoneOpenedNotified = true;
+    }
+
+    remote function onClosed(MilestoneEvent payload) returns error? {
+        log:printInfo("Milestone closed");
+        milestoneClosedNotified = true;
+    }
+
+    remote function onDeleted(MilestoneEvent payload) returns error? {
+        log:printInfo("Milestone deleted");
+        milestoneDeletedNotified = true;
+    }
+}
+
+service LabelService on githubListener {
+
+    remote function onCreated(LabelEvent payload) returns error? {
+        log:printInfo("Label created");
+        labelCreatedNotified = true;
+        labelCreatedName = payload.label.name;
+    }
+
+    remote function onEdited(LabelEvent payload) returns error? {
+        log:printInfo("Label edited");
+        labelEditedNotified = true;
+        labelChanges = payload.changes;
+    }
+
+    remote function onDeleted(LabelEvent payload) returns error? {
+        log:printInfo("Label deleted");
+        labelDeletedNotified = true;
+    }
+}
+
+service WorkflowRunService on githubListener {
+
+    remote function onRequested(WorkflowRunEvent payload) returns error? {
+        log:printInfo("Workflow run requested");
+        workflowRunRequestedNotified = true;
+        workflowRunName = payload.workflow_run.name;
+    }
+
+    remote function onInProgress(WorkflowRunEvent payload) returns error? {
+        log:printInfo("Workflow run in progress");
+        workflowRunInProgressNotified = true;
+    }
+
+    remote function onCompleted(WorkflowRunEvent payload) returns error? {
+        log:printInfo("Workflow run completed");
+        workflowRunCompletedNotified = true;
+        workflowRunConclusion = payload.workflow_run.conclusion ?: "";
+    }
+}
+
+service ReleaseService on githubListener {
+
+    remote function onCreated(ReleaseEvent payload) returns error? {
+        log:printInfo("Release created");
+        releaseCreatedNotified = true;
+        releaseTagName = payload.release.tag_name;
+    }
+
+    remote function onPublished(ReleaseEvent payload) returns error? {
+        log:printInfo("Release published");
+        releasePublishedNotified = true;
+    }
+
+    remote function onReleased(ReleaseEvent payload) returns error? {
+        log:printInfo("Release released");
+        releaseReleasedNotified = true;
+    }
+
+    remote function onPrereleased(ReleaseEvent payload) returns error? {
+        log:printInfo("Release prereleased");
+        releasePrereleasedNotified = true;
+    }
+
+    remote function onUnpublished(ReleaseEvent payload) returns error? {
+        log:printInfo("Release unpublished");
+        releaseUnpublishedNotified = true;
+    }
+
+    remote function onDeleted(ReleaseEvent payload) returns error? {
+        log:printInfo("Release deleted");
+        releaseDeletedNotified = true;
+    }
+
+    remote function onEdited(ReleaseEvent payload) returns error? {
+        log:printInfo("Release edited");
+        releaseEditedNotified = true;
+        releaseChanges = payload.changes;
+    }
+}
+
+service PullRequestReviewService on githubListener {
+
+    remote function onSubmitted(PullRequestReviewEvent payload) returns error? {
+        log:printInfo("PR review submitted");
+        prReviewSubmittedNotified = true;
+        prReviewState = payload.review.state;
+    }
+
+    remote function onEdited(PullRequestReviewEvent payload) returns error? {
+        log:printInfo("PR review edited");
+        prReviewEditedNotified = true;
+        prReviewChanges = payload.changes;
+    }
+
+    remote function onDismissed(PullRequestReviewEvent payload) returns error? {
+        log:printInfo("PR review dismissed");
+        prReviewDismissedNotified = true;
+    }
+}
+
+service PushService on githubListener {
+
+    remote function onPush(PushEvent payload) returns error? {
+        log:printInfo("Push received");
+        pushNotified = true;
+        pushRef = payload.'ref;
     }
 }
 
